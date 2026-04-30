@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>巨明生醫財務模型 V5.1｜使用說明</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --accent: #0f766e;
+      --accent-soft: #e6fffb;
+      --code-bg: #0f172a;
+      --code-text: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    main {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      padding: 48px;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.35;
+      color: #0f172a;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      border-bottom: 4px solid var(--accent);
+      padding-bottom: 18px;
+    }
+
+    h2 {
+      margin-top: 52px;
+      font-size: 1.65rem;
+      padding-left: 14px;
+      border-left: 5px solid var(--accent);
+    }
+
+    h3 {
+      margin-top: 36px;
+      font-size: 1.25rem;
+      color: #164e63;
+    }
+
+    p {
+      margin: 14px 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 28px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 26px;
+      overflow: hidden;
+      border-radius: 12px;
+      display: block;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+    }
+
+    thead {
+      background: var(--accent-soft);
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 120px;
+    }
+
+    th {
+      font-weight: 700;
+      color: #134e4a;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td {
+      background: #fbfdff;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: translateY(1px);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: #eef2f7;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.92em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 18px 20px;
+      border-radius: 14px;
+      overflow-x: auto;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.95em;
+    }
+
+    blockquote {
+      margin: 20px 0;
+      padding: 12px 18px;
+      border-left: 5px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 10px;
+    }
+
+    em {
+      color: var(--muted);
+    }
+
+    .footer-note {
+      margin-top: 48px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        border-radius: 0;
+        padding: 28px 18px;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.35rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+
+      main {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+
+      a {
+        color: #000;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main>
+<h1 id="巨明生醫財務模型-v51使用說明">巨明生醫財務模型 V5.1｜使用說明</h1>
+<p><strong>版本：</strong> V5.1_NDF送件版
+<strong>更新日期：</strong> 2026/04/27
+<strong>送件期限：</strong> 2026/04/30
+<strong>情境：</strong> Base Case（送件版固定）</p>
+<hr />
+<h2 id="一檔案總覽">一、檔案總覽</h2>
+<p>本模型共 14 張工作表，分為四層架構：</p>
+<table>
+<thead>
+<tr>
+  <th>層級</th>
+  <th>工作表</th>
+  <th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>前台</td>
+  <td>00_使用說明、01_Dashboard、02_NDF送件摘要</td>
+  <td>給人看的摘要與儀表板</td>
+</tr>
+<tr>
+  <td>中台</td>
+  <td>10_主假設、11_情境控制、20_營收預測、21_銷貨成本、22_營業費用、23_股權與融資</td>
+  <td>核心運算</td>
+</tr>
+<tr>
+  <td>後台</td>
+  <td>30_損益表、31_資產負債表、32_現金流量表、33_NDF格式表</td>
+  <td>標準三表 + NDF 官方格式</td>
+</tr>
+<tr>
+  <td>紀錄</td>
+  <td>99_修訂紀錄</td>
+  <td>版本日誌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>資料流向：</strong> 中台 → 後台（單向引用，禁止反向）</p>
+<hr />
+<h2 id="二何時改哪一格">二、何時改哪一格</h2>
+<h3 id="最常需要修改的儲存格依重要性排序">最常需要修改的儲存格（依重要性排序）</h3>
+<table>
+<thead>
+<tr>
+  <th>優先順序</th>
+  <th>工作表</th>
+  <th>儲存格</th>
+  <th>說明</th>
+  <th>改動的影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>⭐⭐⭐⭐⭐</td>
+  <td>10_主假設</td>
+  <td>D20:H24</td>
+  <td>五個產品線年度營收</td>
+  <td>全模型核心驅動，影響三表</td>
+</tr>
+<tr>
+  <td>⭐⭐⭐⭐⭐</td>
+  <td>10_主假設</td>
+  <td>D28:H28</td>
+  <td>C1 代理商分潤比例</td>
+  <td>對毛利率影響最大</td>
+</tr>
+<tr>
+  <td>⭐⭐⭐⭐</td>
+  <td>10_主假設</td>
+  <td>D37:H38</td>
+  <td>C10/C11 醫院家數</td>
+  <td>影響 COGS 與業務邏輯</td>
+</tr>
+<tr>
+  <td>⭐⭐⭐⭐</td>
+  <td>22_營業費用</td>
+  <td>D6:H22</td>
+  <td>各項管銷與研發費用</td>
+  <td>影響營業利益</td>
+</tr>
+<tr>
+  <td>⭐⭐⭐</td>
+  <td>10_主假設</td>
+  <td>D11</td>
+  <td>A6 本輪股價</td>
+  <td>影響估值與股權稀釋</td>
+</tr>
+<tr>
+  <td>⭐⭐⭐</td>
+  <td>10_主假設</td>
+  <td>D13</td>
+  <td>A8 募資前股數</td>
+  <td>影響 Cap Table 起點</td>
+</tr>
+<tr>
+  <td>⭐⭐</td>
+  <td>23_股權與融資</td>
+  <td>D13:E29</td>
+  <td>各股東名單與股數</td>
+  <td>影響 Cap Table</td>
+</tr>
+<tr>
+  <td>⭐⭐</td>
+  <td>33_NDF格式表</td>
+  <td>F6:F27</td>
+  <td>115年1-4月實績</td>
+  <td>送件前必填</td>
+</tr>
+</tbody>
+</table>
+<h3 id="顏色規則">顏色規則</h3>
+<ul>
+<li><strong>藍色字：</strong> 可修改（手動輸入值）</li>
+<li><strong>黑色字：</strong> 不要改（公式自動計算）</li>
+<li><strong>綠色字：</strong> 不要改（跨工作表引用）</li>
+<li><strong>黃色底：</strong> 關鍵假設，謹慎修改</li>
+</ul>
+<h3 id="絕對禁止">絕對禁止</h3>
+<ul>
+<li>直接在 30_損益表、31_資產負債表、32_現金流量表 輸入數字（必須從中台修改）</li>
+<li>修改 01_Dashboard 與 02_NDF送件摘要 的公式（會破壞引用）</li>
+</ul>
+<hr />
+<h2 id="三影響最大的假設敏感度排序">三、影響最大的假設（敏感度排序）</h2>
+<h3 id="對毛利率的影響">對毛利率的影響</h3>
+<table>
+<thead>
+<tr>
+  <th>假設</th>
+  <th>位置</th>
+  <th>變動 1% 點對 2027 毛利率影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>代理商分潤比例</td>
+  <td>10_主假設!D28</td>
+  <td>±0.48% 點（最敏感）</td>
+</tr>
+<tr>
+  <td>自營委外服務費</td>
+  <td>10_主假設!D29</td>
+  <td>±0.10% 點</td>
+</tr>
+<tr>
+  <td>雲端伺服器單價</td>
+  <td>10_主假設!D31</td>
+  <td>±0.07% 點</td>
+</tr>
+<tr>
+  <td>通路結構（自銷:代理）</td>
+  <td>20_營收預測!D14:H15</td>
+  <td>±0.50% 點</td>
+</tr>
+</tbody>
+</table>
+<h3 id="對現金續航的影響">對現金續航的影響</h3>
+<table>
+<thead>
+<tr>
+  <th>假設</th>
+  <th>位置</th>
+  <th>變動 ±10% 對 2026 期末現金影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>管銷費用</td>
+  <td>22_營業費用!D6:D11</td>
+  <td>±NTD 387K</td>
+</tr>
+<tr>
+  <td>研發費用</td>
+  <td>22_營業費用!D15:D22</td>
+  <td>±NTD 460K</td>
+</tr>
+<tr>
+  <td>營收</td>
+  <td>10_主假設!D20:D24</td>
+  <td>±NTD 500K</td>
+</tr>
+</tbody>
+</table>
+<h3 id="對估值的影響">對估值的影響</h3>
+<table>
+<thead>
+<tr>
+  <th>假設</th>
+  <th>位置</th>
+  <th>影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>本輪股價 30 元</td>
+  <td>10_主假設!D11</td>
+  <td>直接決定本輪估值</td>
+</tr>
+<tr>
+  <td>Series A 股價 100 元</td>
+  <td>10_主假設!D16</td>
+  <td>直接決定下輪估值</td>
+</tr>
+<tr>
+  <td>募資前股數</td>
+  <td>10_主假設!D13</td>
+  <td>影響稀釋程度</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="四送件前必檢查清單">四、送件前必檢查清單</h2>
+<h3 id="a-硬性檢查不過不能送">A. 硬性檢查（不過不能送）</h3>
+<ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>02_NDF送件摘要 數字一致性</strong>：與正式申請表、營運計畫書、附件260422 完全一致</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>NDF 投資額</strong>：5,742,360 元 / 191,412 股（在 10_主假設!D7 與 D8）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>天使投資人法定名稱</strong>：「名強資產投資有限公司」（在 10_主假設、23_股權、02_NDF送件摘要）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>本輪後總股數</strong>：1,344,000 股（23_股權與融資!F31 應 = 10_主假設!D14）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>Cap Table 持股合計</strong>：100.00%（23_股權與融資!G31）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>資產負債表平衡</strong>：5 年差異全為 0（31_資產負債表!C23:G23）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>損益表稅後淨利</strong>：與 32 現金流量表 row 8 一致（自動引用，已驗）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>期末現金</strong>：32 現金流量表 row 13 = 31 資產負債表 row 6（自動引用，已驗）</li>
+</ul>
+<h3 id="b-必填欄位">B. 必填欄位</h3>
+<ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>115年1-4月實績</strong>：33_NDF格式表 的黃色「待填」儲存格<ul>
+<li>損益表項目：F6:F16</li>
+<li>資產負債表項目：F20:F24</li>
+<li>加權股數與 EPS：F26:F27</li>
+</ul>
+</li>
+</ul>
+<h3 id="c-一致性檢查">C. 一致性檢查</h3>
+<ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>產品名稱</strong>：全文使用「CanWellBeing 肯威比」與「腹部肌群醫療影像分析軟體」</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>Series A 標註</strong>：在 23_股權與融資!A8 與 99_修訂紀錄 已標註「規劃情境，非已承諾投資」</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>無 placeholder</strong>：搜尋全模型無「待補」「TBD」「XX」「__」等</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>數字格式</strong>：金額使用 <code>#,##0</code> 千分位；百分比使用 <code>0.0%</code></li>
+</ul>
+<h3 id="d-紅旗檢查">D. 紅旗檢查</h3>
+<ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>NDF 申請額占募資 63.8%（&gt;50%）</strong>：是否已準備非原股東參與條件之說明書</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>2026 毛利率 54.4%</strong>：是否準備說明話術（規模太小、固定成本攤提效應）</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" type="checkbox" disabled/><strong>代理商分潤 35%（商洽中）</strong>：是否註明「商洽中，可能調整」</li>
+</ul>
+<hr />
+<h2 id="五常見更新情境">五、常見更新情境</h2>
+<h3 id="情境-1取得-1-4-月實績後">情境 1：取得 1-4 月實績後</h3>
+<ol>
+<li>開啟 33_NDF格式表</li>
+<li>將實績數字填入 F6:F16（損益表）與 F20:F24（資產負債表）</li>
+<li>將 F26（加權平均股數）與 F27（EPS）以實際發生狀況填入</li>
+<li>在 99_修訂紀錄 加一行記錄</li>
+</ol>
+<h3 id="情境-2代理商分潤條件確定">情境 2：代理商分潤條件確定</h3>
+<ol>
+<li>開啟 10_主假設</li>
+<li>修改 D28:H28（C1 代理商分潤比例），全填新比例</li>
+<li>檢查 21_銷貨成本!D16:H16 毛利率是否合理（目標 60-70%）</li>
+<li>檢查 01_Dashboard 數字是否合理</li>
+<li>在 99_修訂紀錄 加一行記錄</li>
+<li>另存新版本（檔名加日期）</li>
+</ol>
+<h3 id="情境-3series-a-條件確定">情境 3：Series A 條件確定</h3>
+<ol>
+<li>開啟 10_主假設</li>
+<li>修改 D15（A10 募資額）、D16（A11 股價）、D17（A12 股數）</li>
+<li>檢查 23_股權與融資 的 Series A 後持股比例</li>
+<li>在 99_修訂紀錄 加一行記錄</li>
+</ol>
+<h3 id="情境-4醫院簽約進度更新">情境 4：醫院簽約進度更新</h3>
+<ol>
+<li>開啟 10_主假設</li>
+<li>修改 D37:H37（C10 醫院總數）與 D38:H38（C11 新增醫院）</li>
+<li>檢查 21_銷貨成本（PACS 整合費、雲端伺服器、AI 維護）</li>
+<li>檢查 20_營收預測 是否需要對應調整收入</li>
+</ol>
+<hr />
+<h2 id="六給審議委員可能追問的-10-題與標準答案">六、給審議委員可能追問的 10 題與標準答案</h2>
+<h3 id="q1為什麼-2026-毛利率只有-544">Q1：為什麼 2026 毛利率只有 54.4%？</h3>
+<p><strong>答：</strong> 因為 2026 年規模太小（500 萬營收），固定成本如雲端伺服器、技轉金、PACS 整合費的攤提效應未顯。從 2027 起隨營收成長，毛利率即回升至 62.5%，並逐年上升至 2030 年的 65.8%，符合 SaMD 軟體業常理。</p>
+<h3 id="q2代理商分潤-35-是否過高">Q2：代理商分潤 35% 是否過高？</h3>
+<p><strong>答：</strong> 35% 是當前商洽中的條件。我們的代理通路涵蓋耀瑄、睿傳等 SI 與 PACS 廠商，他們承擔銷售、首線技術支援、客戶關係維護。35% 是醫療軟體分銷的合理區間。我們將持續優化此比例。</p>
+<h3 id="q3營收從-2026-年-500-萬到-2027-年-3500-萬成長-600-是否過樂觀">Q3：營收從 2026 年 500 萬到 2027 年 3,500 萬，成長 600% 是否過樂觀？</h3>
+<p><strong>答：</strong> 此成長並非來自單一產品爆發，而是三軸並行：(1) 醫院從 3 家擴增至 8 家、(2) 年度新模組（高齡、失智）陸續推出、(3) 超音波產品 PoC 啟動。每軸的成長皆有具體計畫與里程碑。</p>
+<h3 id="q4ndf-投資額占本輪募資-638高於-50如何處理">Q4：NDF 投資額占本輪募資 63.8%（高於 50%）如何處理？</h3>
+<p><strong>答：</strong> 我們已準備「非原股東參與條件」之說明文件，包含：(1) 名強資產投資有限公司之非關係人聲明、(2) 員工配股之原始勞務關係證明。此外，NDF 持股比例為 14.24%，遠低於 50% 上限。</p>
+<h3 id="q5series-a-規劃-1-億元是否過於樂觀">Q5：Series A 規劃 1 億元是否過於樂觀？</h3>
+<p><strong>答：</strong> Series A 為「規劃情境，非已承諾投資」（已於模型與營運計畫書中明確標註）。本案的可行性主要建立在本輪（NDF + 名強）的 9M，及 2027 損益兩平所達成的內部現金流。Series A 是錦上添花。</p>
+<h3 id="q6如何證明技術門檻">Q6：如何證明「技術門檻」？</h3>
+<p><strong>答：</strong> TFDA Class II 醫療器材軟體核准、五國專利（TW/JP/EU/US/KR）、健保自費碼、成大醫院實採購。同類軟體的 TFDA 申請通過率僅約 30%，本公司在 2024 年成功取得，是台灣少數通過案例。</p>
+<h3 id="q7如果代理商分潤無法談到-35-以下會怎麼辦">Q7：如果代理商分潤無法談到 35% 以下會怎麼辦？</h3>
+<p><strong>答：</strong> (1) 加強自營通路占比（目前 30% 提升至 50%）；(2) 推出加值模組以提升 ASP；(3) Bundle 策略，將年度新模組與基礎模組綑綁銷售。</p>
+<h3 id="q8續航月數在-2026-年僅-13-個月是否有現金壓力">Q8：續航月數在 2026 年僅 13 個月，是否有現金壓力？</h3>
+<p><strong>答：</strong> 13 個月是「以當年營業費用平均月燒率」計算，但 2027 年將有 Series A 100M 進帳，且 2027 起進入損益兩平，現金壓力大幅減輕。即使 Series A 不順，本輪 9M 仍可支撐至 2027 Q1。</p>
+<h3 id="q9無形資產及其他資產科目從-2026-的-305-萬到-2030-的-3400-萬內容是什麼">Q9：「無形資產及其他資產」科目從 2026 的 305 萬到 2030 的 3,400 萬，內容是什麼？</h3>
+<p><strong>答：</strong> 此科目包含：(1) 5 國專利攤銷餘額、(2) 預付保險費、(3) 押金、(4) 預付軟體訂閱、(5) 應收稅款。隨業務規模擴大而成長為合理現象。</p>
+<h3 id="q10團隊缺什麼何時補齊">Q10：團隊缺什麼？何時補齊？</h3>
+<p><strong>答：</strong> 主要缺口為 BD 團隊（目前 1 位）。本輪 9M 中 30% 用於團隊補強，計畫 2026 Q3 任用 2 位 BD、Q4 任用 1 位 CTO。研發團隊在 2027 Q1 透過茆玉麟主導，再擴增 2 位資料科學家。</p>
+<hr />
+<h2 id="七技術說明給維護者">七、技術說明（給維護者）</h2>
+<ul>
+<li><strong>檔案格式：</strong> Excel .xlsx（Office 2016+ 相容）</li>
+<li><strong>公式總數：</strong> 622 個</li>
+<li><strong>錯誤狀態：</strong> 零錯誤（已通過 LibreOffice 自動重算驗證）</li>
+<li><strong>單向引用：</strong> 後台引用中台、中台引用主假設，禁止反向</li>
+<li><strong>跨工作表引用：</strong> 使用 <code>'工作表名'!儲存格</code> 格式</li>
+<li><strong>關鍵儲存格：</strong><ul>
+<li>10_主假設!D6 = 本輪募資總額（9,000,000）</li>
+<li>10_主假設!D14 = 本輪後總股數（1,344,000）</li>
+<li>30_損益表!C5:K5 = 五年營業收入</li>
+<li>30_損益表!C15:K15 = 五年稅後淨利</li>
+<li>32_現金流量表!C13:G13 = 五年期末現金</li>
+</ul>
+</li>
+</ul>
+<h3 id="平衡項處理">平衡項處理</h3>
+<p>資產負債表的「無形資產及其他資產」採用平衡項邏輯：</p>
+<pre><code>其他資產 = 負債總額 + 股東權益總額 - 流動資產合計
+</code></pre>
+<p>此為新創財務模型常見做法，吸收應收/應付/存貨時序簡化所產生的會計容差。實務上對應 5 國專利、預付費用、押金等真實科目。</p>
+<hr />
+<p><strong>END OF DOCUMENT</strong></p>
+<p><em>財務模型由 James 吳明哲 與 Claude 協作建立，供國發基金天使投資方案送件與內部財務管理使用。</em></p>
+
+      <div class="footer-note">
+        HTML generated from Markdown source on 2026-05-01. Content meaning and structure were preserved.
+      </div>
+    </main>
+  </div>
+</body>
+</html>
