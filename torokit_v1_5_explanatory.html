@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ToroKit v1.5｜個人健身 AI 課表生成工具包</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #080c0a;
+  --bg2: #0d1210;
+  --panel: #111915;
+  --panel2: #162019;
+  --card: #0f1a14;
+  --border: rgba(74,183,107,.18);
+  --border2: rgba(74,183,107,.08);
+  --green: #4ab76b;
+  --green2: #2ecc5e;
+  --green-dim: rgba(74,183,107,.12);
+  --amber: #f0b429;
+  --red: #f26b6b;
+  --text: #e8ebe8;
+  --muted: #8a9e8d;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Noto Sans TC', sans-serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ─── background texture ─── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 0%,rgba(46,204,94,.07),transparent 60%),
+    radial-gradient(ellipse 40% 60% at 90% 100%,rgba(74,183,107,.05),transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ─── nav ─── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,12,10,.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:56px;
+}
+.nav-brand{
+  font-family:var(--display);
+  font-size:22px;letter-spacing:.08em;
+  color:var(--green);
+}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-links a{
+  color:var(--muted);
+  font-family:var(--mono);font-size:11px;
+  text-decoration:none;
+  padding:4px 10px;border-radius:4px;
+  border:1px solid transparent;
+  transition:all .2s;
+}
+.nav-links a:hover{color:var(--green);border-color:var(--border)}
+
+/* ─── hero ─── */
+.hero{
+  position:relative;z-index:1;
+  padding:80px 28px 60px;
+  max-width:1100px;margin:0 auto;
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;
+  color:var(--green);letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(56px,9vw,120px);
+  line-height:.92;letter-spacing:.02em;
+  color:#fff;
+  margin-bottom:24px;
+}
+.hero-title span{color:var(--green)}
+.hero-sub{
+  font-size:17px;color:var(--muted);
+  max-width:620px;line-height:1.8;
+  margin-bottom:40px;
+}
+.hero-meta{
+  display:flex;gap:24px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+}
+.hero-meta b{color:var(--green)}
+
+/* ─── version badge ─── */
+.v-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-dim);
+  border:1px solid var(--border);border-radius:6px;
+  padding:6px 14px;
+  font-family:var(--mono);font-size:13px;color:var(--green);
+  margin-bottom:32px;
+}
+.v-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ─── section wrapper ─── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+section{position:relative;z-index:1;padding:64px 0}
+section+section{border-top:1px solid var(--border2)}
+.section-label{
+  font-family:var(--mono);font-size:11px;
+  color:var(--green);letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.section-title{
+  font-family:var(--display);
+  font-size:clamp(32px,5vw,56px);
+  letter-spacing:.04em;color:#fff;
+  margin-bottom:32px;
+  line-height:1;
+}
+
+/* ─── update cards ─── */
+.update-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.u-card{
+  background:var(--panel);
+  border:1px solid var(--border);border-radius:12px;
+  padding:20px 22px;
+  transition:border-color .25s,transform .25s;
+}
+.u-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.u-num{
+  font-family:var(--display);font-size:40px;
+  color:var(--green-dim);line-height:1;
+  margin-bottom:8px;
+  background:linear-gradient(135deg,var(--green),rgba(46,204,94,.3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.u-title{font-weight:700;font-size:15px;margin-bottom:6px}
+.u-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ─── flow diagram ─── */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:32px}
+.flow-step{
+  flex:1;min-width:160px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:20px 18px;
+  position:relative;
+}
+.flow-step:first-child{border-radius:12px 0 0 12px}
+.flow-step:last-child{border-radius:0 12px 12px 0}
+.flow-step+.flow-step::before{
+  content:'→';
+  position:absolute;left:-14px;top:50%;transform:translateY(-50%);
+  color:var(--green);font-size:18px;
+  z-index:2;
+}
+.flow-n{
+  font-family:var(--mono);font-size:11px;
+  color:var(--green);margin-bottom:6px;
+}
+.flow-t{font-size:13px;font-weight:700;margin-bottom:4px}
+.flow-d{font-size:12px;color:var(--muted)}
+
+/* ─── goals priority ─── */
+.goal-list{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.goal-item{
+  display:flex;align-items:flex-start;gap:16px;
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:10px;padding:16px 20px;
+  transition:border-color .2s;
+}
+.goal-item:hover{border-color:var(--border)}
+.goal-rank{
+  font-family:var(--display);font-size:48px;
+  line-height:1;min-width:48px;
+  color:rgba(74,183,107,.2);
+}
+.goal-item:nth-child(1) .goal-rank{color:rgba(74,183,107,.7)}
+.goal-item:nth-child(2) .goal-rank{color:rgba(74,183,107,.5)}
+.goal-item:nth-child(3) .goal-rank{color:rgba(74,183,107,.35)}
+.goal-item:nth-child(4) .goal-rank{color:rgba(74,183,107,.2)}
+.goal-content h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.goal-content p{font-size:13px;color:var(--muted)}
+
+/* ─── table ─── */
+.tbl-wrap{overflow-x:auto;margin-top:20px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+th{
+  background:rgba(74,183,107,.1);
+  color:var(--green);font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 14px;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+td{
+  padding:10px 14px;
+  border-bottom:1px solid var(--border2);
+  color:#cdd6cd;vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--green-dim)}
+.tag{
+  display:inline-block;padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);font-size:11px;font-weight:600;
+}
+.tag-ok{background:rgba(74,183,107,.15);color:var(--green)}
+.tag-pending{background:rgba(240,180,41,.1);color:var(--amber)}
+.tag-no{background:rgba(242,107,107,.1);color:var(--red)}
+
+/* ─── injury grid ─── */
+.injury-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:24px}
+.inj-card{
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:10px;padding:16px 18px;
+}
+.inj-part{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:6px}
+.inj-status{font-size:14px;font-weight:700;margin-bottom:6px}
+.inj-note{font-size:12px;color:var(--muted);line-height:1.5}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.dot-green{background:var(--green)}
+.dot-amber{background:var(--amber)}
+.dot-red{background:var(--red)}
+
+/* ─── warmup box ─── */
+.warmup-box{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:24px 28px;
+  margin-top:24px;
+}
+.warmup-box h3{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--green)}
+.warmup-steps{display:flex;flex-direction:column;gap:10px}
+.warmup-step{
+  display:flex;align-items:flex-start;gap:12px;
+}
+.ws-time{
+  font-family:var(--mono);font-size:11px;color:var(--green);
+  background:var(--green-dim);padding:2px 8px;border-radius:4px;
+  white-space:nowrap;flex-shrink:0;margin-top:2px;
+}
+.ws-text{font-size:13px;color:var(--muted)}
+.ws-text b{color:var(--text)}
+
+/* ─── equipment table ─── */
+.equip-verified{color:var(--green);font-weight:600}
+.equip-pending{color:var(--amber)}
+
+/* ─── cable convert ─── */
+.cable-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:20px}
+.cable-card{
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:8px;padding:14px 16px;text-align:center;
+}
+.cable-plates{font-family:var(--display);font-size:36px;color:var(--green);line-height:1}
+.cable-lb{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
+.cable-kg{font-size:13px;font-weight:700;margin-top:4px}
+
+/* ─── template block ─── */
+.tmpl{
+  background:var(--bg2);
+  border:1px solid var(--border);border-radius:10px;
+  padding:20px 24px;margin-top:20px;
+  font-family:var(--mono);font-size:12px;
+  color:#9db89d;line-height:1.9;
+  white-space:pre-wrap;word-break:break-word;
+}
+.tmpl .k{color:var(--green)}
+.tmpl .v{color:#cdd6cd}
+
+/* ─── action table headers ─── */
+.alt-grid{display:flex;flex-direction:column;gap:24px;margin-top:24px}
+.alt-section h3{
+  font-size:14px;font-weight:700;
+  color:var(--green);margin-bottom:10px;
+  font-family:var(--mono);letter-spacing:.06em;
+}
+
+/* ─── prompt block ─── */
+.prompt-block{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-left:4px solid var(--green);
+  border-radius:10px;padding:24px 28px;
+  margin-top:24px;
+  font-family:var(--mono);font-size:12px;
+  color:#9db89d;line-height:2;
+  white-space:pre-wrap;word-break:break-word;
+}
+
+/* ─── changelog ─── */
+.changelog{display:flex;flex-direction:column;gap:0;margin-top:24px}
+.cl-item{
+  display:flex;gap:20px;
+  padding:18px 0;
+  border-bottom:1px solid var(--border2);
+}
+.cl-item:last-child{border-bottom:none}
+.cl-ver{
+  font-family:var(--display);font-size:28px;
+  color:var(--green);min-width:80px;line-height:1.1;
+}
+.cl-date{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:8px}
+.cl-items{font-size:13px;color:var(--muted);line-height:1.9}
+.cl-items li{margin-left:16px;list-style:disc}
+.cl-items li b{color:var(--text)}
+
+/* ─── github notice ─── */
+.gh-notice{
+  background:linear-gradient(135deg,rgba(74,183,107,.08),rgba(46,204,94,.04));
+  border:1px solid var(--border);border-radius:12px;
+  padding:24px 28px;margin-top:40px;
+  display:flex;align-items:flex-start;gap:16px;
+}
+.gh-icon{font-size:28px;flex-shrink:0}
+.gh-content h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.gh-content p{font-size:13px;color:var(--muted);line-height:1.7}
+.gh-content a{color:var(--green);text-decoration:none}
+.gh-content a:hover{text-decoration:underline}
+.gh-content code{
+  font-family:var(--mono);font-size:11px;
+  background:var(--green-dim);padding:2px 6px;border-radius:3px;color:var(--green);
+}
+
+/* ─── footer ─── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border2);
+  padding:32px 28px;
+  text-align:center;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+footer span{color:var(--green)}
+
+/* ─── responsive ─── */
+@media(max-width:768px){
+  .flow{flex-direction:column}
+  .flow-step{min-width:auto;border-radius:0!important}
+  .flow-step:first-child{border-radius:12px 12px 0 0!important}
+  .flow-step:last-child{border-radius:0 0 12px 12px!important}
+  .flow-step+.flow-step::before{content:'↓';left:50%;top:-14px;transform:translateX(-50%)}
+  .nav-links{display:none}
+  .hero-title{font-size:clamp(48px,14vw,80px)}
+}
+
+/* ─── scroll animation ─── */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">TOROKIT v1.5</div>
+  <div class="nav-links">
+    <a href="#updates">更新重點</a>
+    <a href="#flow">使用流程</a>
+    <a href="#goals">訓練目標</a>
+    <a href="#warmup">暖身原則</a>
+    <a href="#equipment">器材</a>
+    <a href="#injury">傷病</a>
+    <a href="#html-spec">HTML 規格</a>
+    <a href="#prompt">AI 提示詞</a>
+    <a href="#changelog">更新紀錄</a>
+  </div>
+</nav>
+
+<div class="hero wrap">
+  <div class="hero-eyebrow">個人健身 AI 課表生成工具包</div>
+  <div class="v-badge">v1.5 最新版本｜2026-05-16</div>
+  <h1 class="hero-title">TORO<span>KIT</span></h1>
+  <p class="hero-sub">以 AI 協作為核心的長期個人健身系統。從身體狀態判斷到課表生成、HTML 視覺化輸出與 Notion 追蹤，一份文件驅動全流程。</p>
+  <div class="hero-meta">
+    <div><b>版本</b> v1.5</div>
+    <div><b>更新日</b> 2026-05-16</div>
+    <div><b>訓練場館</b> 益身 GYM + 居家</div>
+    <div><b>教練課</b> 每週一次</div>
+    <div><b>核心目標</b> 最大肌力 → 爆發力 → 間接心肺 → 減脂</div>
+  </div>
+</div>
+
+<section id="updates">
+  <div class="wrap">
+    <div class="section-label">What's New</div>
+    <h2 class="section-title">V1.5 核心更新</h2>
+    <div class="update-grid">
+      <div class="u-card fade-in"><div class="u-num">01</div><div class="u-title">彈性目標導向設計</div><div class="u-desc">移除固定主動作清單。由今日目標驅動動作池選擇，不被特定動作綁住。</div></div>
+      <div class="u-card fade-in"><div class="u-num">02</div><div class="u-title">取消預設獨立有氧</div><div class="u-desc">心肺刺激透過超級組、密度組與複合動作循環達成，不排獨立有氧區塊。</div></div>
+      <div class="u-card fade-in"><div class="u-num">03</div><div class="u-title">最小有效暖身原則</div><div class="u-desc">預設 5 分鐘以內。只保留安全、關節準備與表現所需的最低量，狀態欠佳才延長。</div></div>
+      <div class="u-card fade-in"><div class="u-num">04</div><div class="u-title">HTML 重量雙欄規格</div><div class="u-desc">課表主表格必須同時顯示 RPE 與建議實際重量（kg／磅片數／啞鈴／Cable 片數）。</div></div>
+      <div class="u-card fade-in"><div class="u-num">05</div><div class="u-title">每動作 2–3 替代</div><div class="u-desc">每個計畫動作必須提供替代選項，適用器材被占用、不熟悉動作或感覺不好時。</div></div>
+      <div class="u-card fade-in"><div class="u-num">06</div><div class="u-title">握力作為獨立追蹤變數</div><div class="u-desc">基於 5/16 RDL 觀察：握力先於大肌群退場。AI 排課需將握力疲勞納入獨立判斷。</div></div>
+      <div class="u-card fade-in"><div class="u-num">07</div><div class="u-title">器材清單全面更新</div><div class="u-desc">Cable 每片 10 磅（4.5 kg）已確認。蹲架、power rack、壺鈴、藥球等皆已驗證。</div></div>
+      <div class="u-card fade-in"><div class="u-num">08</div><div class="u-title">右手腕更新為 OK</div><div class="u-desc">5/11 短暫怪感後續未再出現，目前標記為綠燈觀察中。其他傷病區域維持監測。</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="flow"><div class="wrap"><div class="section-label">Workflow</div><h2 class="section-title">最低摩擦使用流程</h2><div class="flow fade-in"><div class="flow-step"><div class="flow-n">STEP 01</div><div class="flow-t">開啟 Notion</div><div class="flow-d">健身與健康｜日常追蹤系統</div></div><div class="flow-step"><div class="flow-n">STEP 02</div><div class="flow-t">填入今日狀態</div><div class="flow-d">燈號、DOMS、睡眠、能量、空腹</div></div><div class="flow-step"><div class="flow-n">STEP 03</div><div class="flow-t">交給 AI</div><div class="flow-d">狀態 + 訓練紀錄 + ToroKit v1.5</div></div><div class="flow-step"><div class="flow-n">STEP 04</div><div class="flow-t">AI 判斷</div><div class="flow-d">目標 → 動作池 → 擇優選擇</div></div><div class="flow-step"><div class="flow-n">STEP 05</div><div class="flow-t">執行課表</div><div class="flow-d">含動作說明入口與極限壓縮版</div></div><div class="flow-step"><div class="flow-n">STEP 06</div><div class="flow-t">回填 Notion</div><div class="flow-d">RPE、重量、燈號、DOMS、觀察</div></div></div></div></section>
+
+<section id="goals">
+  <div class="wrap"><div class="section-label">Training Goals</div><h2 class="section-title">目標優先順序</h2><p style="color:var(--muted);font-size:14px;margin-bottom:8px">v1.5 新邏輯：由今日目標決定動作選擇，不被固定動作清單綁住。</p><div class="goal-list fade-in"><div class="goal-item"><div class="goal-rank">1</div><div class="goal-content"><h3>最大肌力</h3><p>大重量、低反覆（3–6 下）、長組間休息（2–4 分）、複合多關節動作、神經主導。動作池：槓鈴深蹲、哈克蹲、Leg Press、RDL、傳統硬舉、臥推、划船、肩推等（擇優）。</p></div></div><div class="goal-item"><div class="goal-rank">2</div><div class="goal-content"><h3>爆發力</h3><p>速度優先、品質優先（速度下降即停）、低反覆（3–5 下）、爆發式髖伸與拉。動作池：壺鈴擺盪、高拉、Clean、Snatch、低衝擊跳躍、Cable Pull-through Speed（擇優）。</p></div></div><div class="goal-item"><div class="goal-rank">3</div><div class="goal-content"><h3>心肺刺激（透過力量訓練）</h3><p>不排獨立有氧。透過超級組（A1/A2）、EMOM、低休息密度組、複合動作循環達成間接心肺刺激。</p></div></div><div class="goal-item"><div class="goal-rank">4</div><div class="goal-content"><h3>減脂</h3><p>透過訓練量、總工作量與營養管理達成，不犧牲目標 1 與 2。大複合動作 + 短休密度組為主要手段。</p></div></div></div><div style="margin-top:40px"><h3 style="font-size:15px;font-weight:700;margin-bottom:16px;color:var(--green)">目標導向動作池範例</h3><div class="tbl-wrap"><table><thead><tr><th>今日目標</th><th>動作池（擇優）</th></tr></thead><tbody><tr><td>最大肌力（下肢）</td><td>槓鈴深蹲、哈克蹲、45度腿推、RDL、傳統硬舉、保加利亞蹲、後跨步蹲、Goblet Squat</td></tr><tr><td>最大肌力（上肢推）</td><td>槓鈴臥推、啞鈴臥推、史密斯臥推、機械胸推、肩推（站／坐／機械）、伏地挺身負重</td></tr><tr><td>最大肌力（上肢拉）</td><td>寬握下拉、輔助引體、單臂啞鈴划船、槓鈴划船、T-Bar、坐姿划船、機械划船</td></tr><tr><td>爆發力</td><td>壺鈴擺盪、高拉、藥球拋擲、低衝擊跳躍、Cable Pull-through Speed</td></tr><tr><td>透過力量達成心肺</td><td>壺鈴複合（Clean→Press→Squat）、A1/A2 超級組、EMOM、力量循環</td></tr><tr><td>減脂導向密度</td><td>大複合動作 + 機械輔助 + 短休密度組</td></tr></tbody></table></div></div></div>
+</section>
+
+<section id="warmup"><div class="wrap"><div class="section-label">Warm-up Protocol</div><h2 class="section-title">最小有效暖身</h2><p style="color:var(--muted);font-size:14px;margin-bottom:4px">預設 5 分鐘以內完成。狀態欠佳（燈號黃燈、睡眠不足、新動作、測試日）才延長至 8–10 分鐘。</p><div class="warmup-box fade-in"><h3>標準暖身流程（5 分鐘）</h3><div class="warmup-steps"><div class="warmup-step"><span class="ws-time">1–2 分</span><div class="ws-text"><b>體溫上升</b>：跳繩、原地踏步、開合跳、爬樓梯。步行至健身房本身已達成時可跳過。</div></div><div class="warmup-step"><span class="ws-time">1–2 分</span><div class="ws-text"><b>關節活動</b>：依當日主訓練選擇 1–2 個髖／肩／踝活動度動作。</div></div><div class="warmup-step"><span class="ws-time">1–2 分</span><div class="ws-text"><b>主動作專項暖身</b>：主動作空槓或輕重量 1 組 × 5–8 下，確認動作路徑與身體反應。</div></div></div></div><div style="margin-top:20px;background:var(--panel);border:1px solid var(--border2);border-radius:10px;padding:18px 22px"><h3 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--red)">不必再做的事</h3><ul style="font-size:13px;color:var(--muted);line-height:2;margin-left:16px;list-style:disc"><li>每次都做 90/90 呼吸 + 核心撐壓的長套組</li><li>每次都做 5 種以上動態暖身</li><li>每次都安排心肺暖身機 5 分鐘</li><li>把暖身當「次要訓練」來設計</li></ul></div></div></section>
+
+<section id="equipment"><div class="wrap"><div class="section-label">Equipment</div><h2 class="section-title">可用器材</h2><h3 style="font-size:15px;font-weight:700;margin-bottom:14px">益身 GYM｜台南府前路一段 176 號 4F</h3><div class="tbl-wrap fade-in"><table><thead><tr><th>類別</th><th>設備</th><th>狀態</th></tr></thead><tbody><tr><td>自由重量</td><td>槓鈴、啞鈴（雙手總重記錄）</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>自由重量</td><td>史密斯機（槓約 15–20 kg 預設）</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>蹲類</td><td>蹲架、power rack、臥推架、舉重台</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>蹲類</td><td>哈克蹲機（機架約 20 kg 預設）</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>腿部</td><td>45 度腿推／Leg Press（至 120 kg 確認）</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>腿部</td><td>機械腿彎舉、機械腿伸</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>推類機械</td><td>機械胸推、坐推、機械肩推</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>拉類機械</td><td>寬握下拉、坐姿划船、屈體划船、T-Bar</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>孤立</td><td>蝴蝶夾胸機、機械二頭、機械三頭、機械腹肌</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>Cable</td><td>Cable 機（含下壓 A 把）</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>功能訓練</td><td>壺鈴、藥球、跳箱、戰繩</td><td><span class="tag tag-ok">大部分已確認</span></td></tr><tr><td>自體重</td><td>單槓／雙槓</td><td><span class="tag tag-ok">已驗證</span></td></tr><tr><td>心肺</td><td>跑步機、橢圓機等</td><td><span class="tag tag-pending">暫不追蹤</span></td></tr></tbody></table></div><div style="margin-top:32px"><h3 style="font-size:15px;font-weight:700;margin-bottom:16px">Cable 配重換算表</h3><p style="font-size:13px;color:var(--muted);margin-bottom:12px">每片 <b style="color:var(--green)">10 磅（約 4.5 kg）</b>｜已確認</p><div class="cable-grid fade-in"><div class="cable-card"><div class="cable-plates">1p</div><div class="cable-lb">10 lb</div><div class="cable-kg">≈ 4.5 kg</div></div><div class="cable-card"><div class="cable-plates">2p</div><div class="cable-lb">20 lb</div><div class="cable-kg">≈ 9 kg</div></div><div class="cable-card"><div class="cable-plates">3p</div><div class="cable-lb">30 lb</div><div class="cable-kg">≈ 13.6 kg</div></div><div class="cable-card"><div class="cable-plates">4p</div><div class="cable-lb">40 lb</div><div class="cable-kg">≈ 18.1 kg</div></div><div class="cable-card"><div class="cable-plates">5p</div><div class="cable-lb">50 lb</div><div class="cable-kg">≈ 22.7 kg</div></div><div class="cable-card"><div class="cable-plates">6p</div><div class="cable-lb">60 lb</div><div class="cable-kg">≈ 27.2 kg</div></div><div class="cable-card"><div class="cable-plates">9p</div><div class="cable-lb">90 lb</div><div class="cable-kg">≈ 40.8 kg</div></div><div class="cable-card"><div class="cable-plates">12p</div><div class="cable-lb">120 lb</div><div class="cable-kg">≈ 54.4 kg</div></div></div></div><div style="margin-top:32px"><h3 style="font-size:15px;font-weight:700;margin-bottom:14px">居家器材</h3><div class="tbl-wrap"><table><thead><tr><th>器材</th><th>規格</th><th>備註</th></tr></thead><tbody><tr><td>壺鈴</td><td>12 kg × 1、20 kg × 1</td><td>主要爆發力與髖主導訓練器材</td></tr><tr><td>彈力繩</td><td>黃（輕）、紅（中）</td><td>腳踩式；無固定點，不設計懸掛式動作</td></tr><tr><td>健腹輪</td><td>× 1</td><td>核心抗伸展；站姿已可進行（2組×10下）</td></tr><tr><td>徒手空間</td><td>—</td><td>伏地挺身、深蹲、死蟲、棒式等</td></tr></tbody></table></div></div></div></section>
+
+<section id="injury"><div class="wrap"><div class="section-label">Injury & Recovery</div><h2 class="section-title">傷病狀態與燈號</h2><p style="font-size:13px;color:var(--muted);margin-bottom:8px">⚠️ 舊傷綠燈 ≠ 肌群已完全恢復。舊傷燈號與 DOMS 狀態必須分開判斷。</p><div class="injury-grid fade-in"><div class="inj-card"><div class="inj-part">左手肘</div><div class="inj-status"><span class="dot dot-amber"></span>持續觀察</div><div class="inj-note">約兩年前脫臼，已復健完整。接近最大負荷時可能有輕微感覺。重推、重拉、單槓需監測穩定性。</div></div><div class="inj-card"><div class="inj-part">右腳踝</div><div class="inj-status"><span class="dot dot-amber"></span>持續觀察</div><div class="inj-note">去年 7 月嚴重扭傷，目前重訓可執行。跳躍、單腳穩定、快速變向需保守漸進。</div></div><div class="inj-card"><div class="inj-part">左大腿外側</div><div class="inj-status"><span class="dot dot-amber"></span>持續觀察</div><div class="inj-note">近期時好時壞，與蹲類頻率相關。腿推、深蹲、弓箭步需控制容量。</div></div><div class="inj-card"><div class="inj-part">右手腕</div><div class="inj-status"><span class="dot dot-green"></span>目前 OK</div><div class="inj-note">5/11 訓練後短暫怪感，後續未再出現。維持觀察，推類保持手腕中立。</div></div><div class="inj-card"><div class="inj-part">握力</div><div class="inj-status"><span class="dot dot-amber"></span>新增追蹤</div><div class="inj-note">5/16 RDL 70kg 後段握力先於大肌群退場。AI 排課需視握力為獨立疲勞變數。</div></div><div class="inj-card"><div class="inj-part">腰椎、肩膀、膝蓋</div><div class="inj-status"><span class="dot dot-green"></span>無特定不適</div><div class="inj-note">仍需保留暖身、動作品質檢查與漸進負荷原則。</div></div></div><div style="margin-top:32px"><h3 style="font-size:15px;font-weight:700;margin-bottom:14px">燈號標準</h3><div class="tbl-wrap fade-in"><table><thead><tr><th>部位</th><th><span class="dot dot-green"></span>綠燈</th><th><span class="dot dot-amber"></span>黃燈</th><th><span class="dot dot-red"></span>紅燈</th></tr></thead><tbody><tr><td>左肘</td><td>無痛、推拉正常</td><td>大重量時有悶感</td><td>尖銳痛、鎖住</td></tr><tr><td>右腳踝</td><td>無痛、單腳站穩</td><td>有酸、單腳不安定</td><td>疼痛、腫脹</td></tr><tr><td>左大腿外側</td><td>無緊繃或輕微</td><td>深蹲時卡但可控</td><td>疼痛、影響軌跡</td></tr><tr><td>右手腕</td><td>中立握、推拉無感</td><td>推類後段有怪感</td><td>尖銳痛、無法承重</td></tr><tr><td>睡眠疲勞</td><td>睡眠正常、精神可</td><td>睡眠不足或疲勞高</td><td>明顯疲憊、失控</td></tr><tr><td>空腹狀態</td><td>精神穩定、無頭暈</td><td>空腹長且能量低</td><td>頭暈、冒冷汗、心悸</td></tr></tbody></table></div></div></div></section>
+
+<section id="html-spec"><div class="wrap"><div class="section-label">HTML Workout Spec</div><h2 class="section-title">HTML 課表規格 v1.5</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px"><div class="u-card fade-in"><div class="u-title" style="margin-bottom:8px">必備基本規格</div><ul style="font-size:13px;color:var(--muted);line-height:2;margin-left:14px;list-style:disc"><li>單一 HTML 檔案，CSS/JS 內嵌</li><li>深色主題預設</li><li>手機可讀、響應式</li><li>Document Outline / TOC</li><li>每章節 Back to Top</li><li>分頁、卡片展開收合、checklist</li></ul></div><div class="u-card fade-in"><div class="u-title" style="margin-bottom:8px">v1.5 新增規格</div><ul style="font-size:13px;color:var(--muted);line-height:2;margin-left:14px;list-style:disc"><li>首頁「查看今日動作說明」按鈕</li><li>主表格 RPE + 建議實際重量雙欄</li><li>每動作 2–3 替代動作</li><li>暖身動作納入詳細說明</li><li>收操動作納入詳細說明</li><li>右側極限壓縮版 checklist</li></ul></div><div class="u-card fade-in"><div class="u-title" style="margin-bottom:8px">必備頁面區塊</div><ul style="font-size:13px;color:var(--muted);line-height:2;margin-left:14px;list-style:disc"><li>今日訓練結論</li><li>今日狀態判讀</li><li>訓練時間軸</li><li>課表主體（RPE+重量雙欄）</li><li>極限壓縮版</li><li>今日動作詳細說明</li><li>替代動作速覽總表</li><li>安全調整 / 設計邏輯</li><li>Notion 回填欄位</li></ul></div></div><h3 style="font-size:15px;font-weight:700;margin-bottom:14px">課表主表格標準欄位</h3><div class="tbl-wrap fade-in"><table><thead><tr><th>順序</th><th>區塊</th><th>動作</th><th>組×次</th><th>RPE</th><th>建議重量</th><th>休息</th><th>替代速覽</th></tr></thead><tbody><tr><td>1</td><td>暖身</td><td>（動作）</td><td>（規格）</td><td>—</td><td>—</td><td>—</td><td>1個簡寫</td></tr><tr><td>2</td><td>主訓練 A</td><td>（動作）</td><td>4×5</td><td>7–8</td><td><b>80–100 kg</b><br><span style="font-size:11px;color:var(--muted)">或啞鈴雙手 60 kg</span></td><td>2–3 分</td><td>見動作說明</td></tr><tr><td>3</td><td>主訓練 B</td><td>（動作）</td><td>3×6</td><td>6.5–7.5</td><td><b>70 kg</b></td><td>2 分</td><td>見動作說明</td></tr><tr><td>4</td><td>輔助</td><td>（動作）</td><td>2×8</td><td>6–7</td><td><b>__ kg / __ 片</b></td><td>75–90 秒</td><td>簡寫</td></tr><tr><td>5</td><td>核心</td><td>（動作）</td><td>2×8</td><td>5–6</td><td>徒手 / __ kg</td><td>45–60 秒</td><td>簡寫</td></tr><tr><td>6</td><td>收操</td><td>（動作）</td><td>（規格）</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div><div style="margin-top:20px;background:var(--panel);border:1px solid var(--border2);border-left:4px solid var(--green);border-radius:10px;padding:16px 20px"><b style="font-size:13px">RPE 定義</b><p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.9">5 = 輕鬆可講話｜6 = 中等｜7 = 保留 3 下｜8 = 保留 1–2 下｜9 = 保留 1 下｜10 = 力竭<br>大重量日常用 RPE 7–8；恢復日常用 RPE 4–7。</p></div><h3 style="font-size:15px;font-weight:700;margin:32px 0 14px">HTML 建議結構</h3><div class="tmpl fade-in"><span class="k">.page</span>
+  ├── <span class="k">#top</span> / Document Outline
+  ├── <span class="k">.header</span>
+  │     └── <span class="v">primary-action</span>：查看今日所有動作詳細說明
+  ├── <span class="k">.status-snapshot</span>（今日狀態判讀）
+  ├── <span class="k">.tags</span>（器材、目標標籤）
+  ├── <span class="k">.timeline</span>（訓練時間軸）
+  ├── <span class="k">.layout</span>
+  │     ├── <span class="k">.main-panel</span>
+  │     │     ├── <span class="v">pane-session</span>（課表主體 RPE + 建議重量雙欄）
+  │     │     ├── <span class="v">#exercise-guide</span>（今日動作詳細說明 + 替代）
+  │     │     ├── <span class="v">pane-alternatives</span>（替代動作速覽總表）
+  │     │     ├── <span class="v">pane-rationale</span>（設計邏輯）
+  │     │     ├── <span class="v">pane-progression</span>（漸進策略）
+  │     │     └── <span class="v">pane-safety</span>（安全調整）
+  │     └── <span class="k">.right-rail</span>
+  │           └── <span class="v">.ultra-card</span>（極限壓縮版 checklist）
+  └── <span class="k">.training-log</span>（Notion 回填欄位）</div></div></section>
+
+<section id="alternatives"><div class="wrap"><div class="section-label">Alternative Movements</div><h2 class="section-title">替代動作規則</h2><p style="font-size:13px;color:var(--muted);margin-bottom:24px">每個計畫動作必須提供 2–3 個替代，適用：器材被占用、不熟悉動作、當日感覺不好、需要更安全版本。</p><div class="alt-grid fade-in"><div class="alt-section"><h3>上肢推</h3><div class="tbl-wrap"><table><thead><tr><th>原動作</th><th>替代 A</th><th>替代 B</th><th>替代 C</th></tr></thead><tbody><tr><td>啞鈴臥推</td><td>槓鈴臥推</td><td>機械胸推</td><td>伏地挺身／彈力繩胸推</td></tr><tr><td>站姿肩推</td><td>機械肩推</td><td>單臂壺鈴肩推</td><td>坐姿啞鈴肩推</td></tr><tr><td>爆發式伏地挺身</td><td>一般伏地挺身</td><td>跪姿伏地挺身</td><td>彈力繩胸推</td></tr></tbody></table></div></div><div class="alt-section"><h3>上肢拉</h3><div class="tbl-wrap"><table><thead><tr><th>原動作</th><th>替代 A</th><th>替代 B</th><th>替代 C</th></tr></thead><tbody><tr><td>單臂壺鈴划船 20kg</td><td>12kg 技術組</td><td>彈力繩輕划船</td><td>取消改核心</td></tr><tr><td>槓鈴划船</td><td>胸靠划船</td><td>坐姿划船</td><td>T-Bar／機械划船</td></tr><tr><td>引體向上</td><td>輔助引體向上</td><td>寬握下拉</td><td>彈力輔助／離心引體</td></tr></tbody></table></div></div><div class="alt-section"><h3>下肢蹲類</h3><div class="tbl-wrap"><table><thead><tr><th>原動作</th><th>替代 A</th><th>替代 B</th><th>替代 C</th></tr></thead><tbody><tr><td>槓鈴深蹲</td><td>哈克蹲</td><td>45度腿推</td><td>Goblet Squat／箱上蹲</td></tr><tr><td>弓箭步／分腿蹲</td><td>保加利亞蹲</td><td>反向跨步蹲</td><td>低台階踩踏</td></tr><tr><td>深蹲跳</td><td>壺鈴擺盪</td><td>快速髖伸</td><td>低衝擊蹲起</td></tr></tbody></table></div></div><div class="alt-section"><h3>下肢髖主導</h3><div class="tbl-wrap"><table><thead><tr><th>原動作</th><th>替代 A</th><th>替代 B</th><th>替代 C</th></tr></thead><tbody><tr><td>槓鈴 RDL</td><td>啞鈴 RDL</td><td>壺鈴硬舉</td><td>Cable Pull-through</td></tr><tr><td>傳統硬舉</td><td>相撲硬舉</td><td>史密斯硬舉</td><td>Trap Bar 硬舉</td></tr></tbody></table></div></div><div class="alt-section"><h3>核心</h3><div class="tbl-wrap"><table><thead><tr><th>原動作</th><th>替代 A</th><th>替代 B</th><th>替代 C</th></tr></thead><tbody><tr><td>站姿健腹輪</td><td>跪姿健腹輪</td><td>小幅度健腹輪</td><td>死蟲／棒式</td></tr><tr><td>機械腹肌</td><td>死蟲</td><td>Pallof press</td><td>側棒式</td></tr></tbody></table></div></div></div></div></section>
+
+<section id="prompt"><div class="wrap"><div class="section-label">AI Prompt Template</div><h2 class="section-title">AI 協作提示詞</h2><p style="font-size:13px;color:var(--muted);margin-bottom:16px">複製以下提示詞，填入今日狀態後交給 Claude / ChatGPT / Gemini。</p><div class="prompt-block fade-in">請先閱讀最新版 ToroKit / Fitness AI Toolkit v1.5。
+
+接下來請根據我的今日狀態、最近訓練紀錄與 ToroKit 規則，幫我設計今天的課表。
+
+今天狀態如下：
+- 日期：
+- 可訓練時間：
+- 地點：健身房／居家
+- 今天目標：（最大肌力／爆發力／間接心肺密度／減脂導向／混合）
+- 距離上次教練課或大重量日：
+- 上次訓練主要內容：
+- 睡眠：
+- 能量：
+- 是否空腹：
+- 左肘／右腳踝／左大腿外側／右手腕：
+- 二頭／三頭／胸／背／肩／腿部 DOMS：
+- 握力疲勞：
+
+請務必遵守：
+1. 目標導向，由今日目標選動作，不被固定動作清單綁住。
+2. 訓練目標優先順序：最大肌力 &gt; 爆發力 &gt; 間接心肺 &gt; 減脂。
+3. 不預設獨立有氧區塊；心肺透過超級組或密度組達成。
+4. 暖身採最小有效暖身原則，預設 5 分鐘以內。
+5. 舊傷燈號與肌肉 DOMS 要分開判斷。握力作為獨立追蹤變數。
+6. 教練課後 24–72 小時內且 DOMS 明顯，使用恢復邏輯，不堆容量。
+7. 不要假設無輔助引體向上。機械式器材未現場確認口徑時，使用預設值並標示。
+8. 所有不確定項目標示「待確認」。
+
+輸出請包含：
+1. 今日訓練結論（明確指出今日目標）
+2. 今日狀態判讀
+3. 完整課表（主表格必須同時顯示 RPE 與建議實際重量）
+4. 極限壓縮版
+5. 首頁「查看今日所有動作詳細說明」入口
+6. 今日所有動作詳細說明，每個動作附 2–3 個替代動作
+7. 替代動作速覽總表
+8. 訓練後 Notion 回填欄位
+9. 若需要 HTML，使用深色主題、目錄導覽、Back to Top、主畫面按鈕、可展開卡片、RPE+重量雙欄</div></div></section>
+
+<section id="changelog"><div class="wrap"><div class="section-label">Changelog</div><h2 class="section-title">更新紀錄</h2><div class="changelog fade-in"><div class="cl-item"><div class="cl-ver">1.5</div><div><div class="cl-date">2026-05-16</div><ul class="cl-items"><li><b>彈性目標導向設計</b>：移除固定主動作清單，由目標驅動動作池</li><li><b>取消預設獨立有氧</b>：心肺透過超級組與密度組達成</li><li><b>最小有效暖身原則</b>：預設 5 分鐘以內</li><li><b>HTML 雙欄規格</b>：RPE + 建議實際重量同時顯示</li><li><b>每動作 2–3 替代</b>：收錄於說明區與替代總表</li><li><b>器材清單更新</b>：Cable 每片 10 磅，蹲架等全部確認</li><li><b>右手腕更新為 OK</b>；其他傷病維持觀察</li><li><b>握力作為獨立追蹤變數</b>（5/16 RDL 觀察）</li><li><b>教練課確認每週一次</b></li></ul></div></div><div class="cl-item"><div class="cl-ver">1.4</div><div><div class="cl-date">2026-05-15</div><ul class="cl-items"><li><b>今日動作詳細說明入口</b>為硬性規格</li><li>舊傷燈號與肌群恢復狀態必須分開判斷</li><li>DOMS 明顯時不預設 20 kg 單臂壺鈴划船</li><li>5/13 教練課 Super Set 後恢復期排課規則</li></ul></div></div><div class="cl-item"><div class="cl-ver">1.3.1</div><div><div class="cl-date">2026-05-11</div><ul class="cl-items"><li>擴充完整動作說明規範（7 欄位）</li><li>新增極限壓縮版課表規範</li><li>更新 HTML 結構（.right-rail、.ultra-card）</li></ul></div></div></div><div class="gh-notice fade-in"><div class="gh-icon">📡</div><div class="gh-content"><h3>GitHub Pages 版本說明</h3><p>本 HTML 為 <b>ToroKit v1.5</b> 說明頁，發布後請將網址回寫至 Notion ToroKit 頁面的「相關連結與子頁」區塊。<br>目前 GitHub Pages 上最新版本為 v1.3.1：<br><a href="https://mcjameswu.github.io/notion_collaboration_toolkit.html/fitness_ai_toolkit_v1_3_1_explanatory.html" target="_blank">fitness_ai_toolkit_v1_3_1_explanatory.html</a><br><br>建議發布檔名：<code>torokit_v1_5_explanatory.html</code><br>發布後在 Notion 新增連結頁，格式同 v1.3.1 的「🔗 GitHub Pages 連結」子頁。</p></div></div></div></section>
+
+<footer><span>ToroKit v1.5</span>｜個人健身 AI 課表生成工具包｜最後更新 2026-05-16｜益身 GYM + 居家</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, {threshold: 0.08});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
