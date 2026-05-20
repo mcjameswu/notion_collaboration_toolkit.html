@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>巨明生醫公司決策中心｜使用者操作手冊 v1.1</title>
+<style>
+:root{
+  --bg:#080c18;--bg2:#0e1426;--panel:#131c30;--card:#192235;--card2:#1f2b42;
+  --text:#eef2f8;--muted:#8899b4;--line:rgba(120,150,200,.16);--line2:rgba(120,150,200,.28);
+  --teal:#3ecfcb;--teal-d:#0e9b97;--amber:#f0b429;--rose:#f87171;
+  --indigo:#818cf8;--sky:#7dd3fc;--emerald:#34d399;--purple:#c084fc;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"Noto Sans TC","Microsoft JhengHei",-apple-system,sans-serif;
+  font-size:15px;line-height:1.78;
+  background-image:
+    radial-gradient(ellipse at 10% 0%,rgba(62,207,203,.07),transparent 40%),
+    radial-gradient(ellipse at 90% 5%,rgba(129,140,248,.06),transparent 38%),
+    radial-gradient(ellipse at 50% 100%,rgba(125,211,252,.04),transparent 50%);
+  background-attachment:fixed;
+}
+main{max-width:1060px;margin:0 auto;padding:36px 20px 100px}
+
+/* Hero */
+.hero{
+  background:linear-gradient(135deg,rgba(19,28,48,.98),rgba(31,43,66,.92));
+  border:1px solid var(--line2);border-radius:26px;
+  padding:44px 40px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;top:-60%;right:-15%;width:55%;height:220%;
+  background:radial-gradient(circle,rgba(62,207,203,.07),transparent 65%);
+  pointer-events:none;
+}
+.eyebrow{
+  color:var(--teal);font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  font-size:11px;display:inline-block;padding:4px 11px;
+  border:1px solid rgba(62,207,203,.28);border-radius:999px;
+  background:rgba(62,207,203,.07);margin-bottom:16px;
+}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.15;margin:0 0 14px;color:#fff;
+  font-weight:800;letter-spacing:-.02em;}
+.lead{font-size:16.5px;color:#b8c8e0;max-width:760px;margin:0 0 20px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px}
+.meta-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line2);
+  border-radius:999px;padding:5px 11px;font-size:12.5px;color:#8899b4;font-weight:600;
+}
+
+/* TOC */
+.toc{
+  background:rgba(19,28,48,.8);border:1px solid var(--line2);border-radius:18px;
+  padding:22px 26px;margin-bottom:22px;
+}
+.toc-title{font-size:11.5px;color:var(--teal);font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:14px;}
+.toc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 24px;}
+.toc-grid li{list-style:none;font-size:14px;counter-increment:toc;}
+.toc-grid li::before{
+  content:counter(toc,decimal-leading-zero);color:var(--teal);
+  font-size:11px;font-weight:800;margin-right:8px;opacity:.65;
+  font-variant-numeric:tabular-nums;
+}
+.toc ol{margin:0;padding:0;counter-reset:toc;}
+.toc a{color:#c5d5ee;text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+.toc a:hover{color:var(--teal);border-bottom-color:rgba(62,207,203,.4)}
+
+/* Section */
+section{
+  background:linear-gradient(135deg,rgba(19,28,48,.7),rgba(31,43,66,.55));
+  border:1px solid var(--line);border-radius:20px;padding:30px 32px;margin:18px 0;
+}
+.back{
+  display:inline-block;margin-top:18px;padding:5px 13px;font-size:12px;
+  color:var(--muted);border:1px solid var(--line2);border-radius:999px;
+  text-decoration:none;transition:.2s;font-weight:600;letter-spacing:.04em;
+}
+.back:hover{color:var(--teal);border-color:var(--teal)}
+
+h2{
+  font-size:22px;color:#fff;font-weight:800;letter-spacing:-.01em;
+  margin:0 0 18px;display:flex;align-items:center;gap:10px;
+}
+h2 .n{
+  color:var(--teal);font-size:12px;font-weight:800;letter-spacing:.12em;
+  font-variant-numeric:tabular-nums;
+}
+h3{font-size:16.5px;color:var(--sky);font-weight:700;margin:20px 0 9px}
+p{margin:0 0 11px;color:#ccd9ee}
+strong,b{color:#fff;font-weight:700}
+ul,ol{padding-left:20px;color:#ccd9ee}
+li{margin-bottom:6px}
+code{
+  background:rgba(62,207,203,.1);color:var(--teal);padding:2px 7px;
+  border-radius:5px;font-family:"JetBrains Mono","Fira Code",monospace;font-size:.87em;
+  border:1px solid rgba(62,207,203,.17);word-break:break-all;
+}
+pre{
+  background:#05090f;border:1px solid var(--line2);border-radius:13px;
+  padding:16px 18px;color:#b8c8e0;font-size:13px;line-height:1.72;
+  overflow-x:auto;font-family:"JetBrains Mono","Fira Code",monospace;margin:13px 0;
+}
+pre code{background:transparent;border:0;padding:0;color:inherit;font-size:inherit}
+
+/* Tables */
+table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line2);
+  border-radius:12px;overflow:hidden;font-size:13.5px;margin:13px 0;}
+th,td{padding:11px 13px;text-align:left;vertical-align:top;
+  border-bottom:1px solid var(--line);border-right:1px solid var(--line);}
+th{background:rgba(62,207,203,.08);color:var(--teal);font-weight:700;font-size:12.5px;letter-spacing:.04em;}
+td{background:rgba(10,16,32,.35);color:#c8d8ec}
+tr:last-child td{border-bottom:0}
+th:last-child,td:last-child{border-right:0}
+
+/* Callouts */
+.callout{border-radius:13px;padding:14px 18px;margin:14px 0;
+  border-left:4px solid var(--teal);background:rgba(62,207,203,.06);color:#c5e8e8;}
+.callout.warn{border-left-color:var(--amber);background:rgba(240,180,41,.06);color:#fde8b0;}
+.callout.danger{border-left-color:var(--rose);background:rgba(248,113,113,.06);color:#fecdd3;}
+.callout.tip{border-left-color:var(--indigo);background:rgba(129,140,248,.06);color:#dbeafe;}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px;margin:16px 0;}
+.card{background:rgba(25,34,53,.65);border:1px solid var(--line2);border-radius:14px;padding:17px 20px;}
+.card .label{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px}
+.card .quote{font-size:17px;color:#fff;font-weight:700;margin:6px 0 9px;line-height:1.4}
+.card .desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Flow steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;}
+.step{background:rgba(25,34,53,.6);border:1px solid var(--line2);border-radius:14px;
+  padding:18px 17px 15px;position:relative;}
+.step .num{
+  position:absolute;top:-11px;left:14px;
+  background:var(--teal-d);color:#050c18;
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:13px;
+}
+.step h4{margin:8px 0 6px;font-size:14.5px;color:var(--teal)}
+.step p{font-size:13px;color:#9ab0cc;margin:0;line-height:1.6}
+
+/* Tag */
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;
+  font-weight:700;letter-spacing:.04em;margin:2px 4px 2px 0;
+  background:rgba(62,207,203,.1);color:var(--teal);border:1px solid rgba(62,207,203,.2);}
+.tag.amber{background:rgba(240,180,41,.1);color:var(--amber);border-color:rgba(240,180,41,.22)}
+.tag.rose{background:rgba(248,113,113,.1);color:var(--rose);border-color:rgba(248,113,113,.22)}
+.tag.indigo{background:rgba(129,140,248,.1);color:var(--indigo);border-color:rgba(129,140,248,.22)}
+.tag.emerald{background:rgba(52,211,153,.1);color:var(--emerald);border-color:rgba(52,211,153,.22)}
+.tag.purple{background:rgba(192,132,252,.1);color:var(--purple);border-color:rgba(192,132,252,.22)}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line2),transparent);margin:22px 0;border:0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 10px;border-top:1px solid var(--line)}
+
+@media(max-width:720px){
+  main{padding:20px 12px 80px}
+  .hero{padding:28px 22px}
+  section{padding:22px 18px}
+  .toc-grid{grid-template-columns:1fr}
+  table{display:block;overflow-x:auto;white-space:nowrap;font-size:12.5px}
+  h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<main id="top">
+
+<header class="hero">
+  <span class="eyebrow">User Manual · v1.1 · 2026-05-20</span>
+  <h1>巨明生醫公司決策中心<br>使用者操作手冊</h1>
+  <p class="lead">給 M.C. James 看的操作手冊。教你在最低摩擦下使用、維護，並請 AI 自動更新巨明生醫公司決策中心 Hub；包含最新三段式週報工作流與 00–04 五大類分類體系。</p>
+  <div class="meta-row">
+    <span class="meta-tag">v1.1 更新：三段式週報工作流</span>
+    <span class="meta-tag">軸線：00–04 五大類</span>
+    <span class="meta-tag">9 個分支（含 A2／A3）</span>
+    <span class="meta-tag">Hub ID: 361fdbfb…</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-title">📍 目錄</div>
+  <ol class="toc-grid">
+    <li><a href="#sec1">系統定位與兩個面孔</a></li>
+    <li><a href="#sec2">三段式週報工作流</a></li>
+    <li><a href="#sec3">如何使用 Hub（人類操作）</a></li>
+    <li><a href="#sec4">30 秒決策判讀流程</a></li>
+    <li><a href="#sec5">五大類識別（00–04）</a></li>
+    <li><a href="#sec6">如何請 AI 檢視系統</a></li>
+    <li><a href="#sec7">如何請 AI 更新系統</a></li>
+    <li><a href="#sec8">完整短指令範例</a></li>
+    <li><a href="#sec9">維護工作流：日／週／月</a></li>
+    <li><a href="#sec10">最低摩擦維護原則</a></li>
+    <li><a href="#sec11">Project Instructions 快速貼上版</a></li>
+    <li><a href="#sec12">疑問排解（FAQ）</a></li>
+  </ol>
+</nav>
+
+<section id="sec1">
+  <h2><span class="n">01</span>系統定位與兩個面孔</h2>
+  <p>巨明生醫公司決策中心是「公司」面向底下的執行型 Hub，永遠不是人生頂層分類。它有兩個面孔，使用同一份 Notion 頁面：</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="label">面孔 A · 給你</div>
+      <div class="quote">Decision Center ＋ Dashboard</div>
+      <div class="desc">打開頁面 30 秒內知道：目前狀態、下一步、待決策、風險、來源依據。低摩擦，可長期維護。</div>
+    </div>
+    <div class="card">
+      <div class="label">面孔 B · 給 AI</div>
+      <div class="quote">AI-readable 操作結構</div>
+      <div class="desc">AI 可快速讀懂、用較少 token 完成任務、自動歸類資訊、產出可寫入草稿。Claude + ChatGPT 均適用。</div>
+    </div>
+  </div>
+  <p>Hub 在人生系統中的位置：</p>
+  <pre>🧭 我的全貌｜人生儀表板（唯一頂層入口）
+  └─ 公司（六大面向之一）
+       └─ 🏗️ 巨明生醫公司決策中心 ← 主 Hub（ID: 361fdbfb…）
+            ├─ HCC 會議紀錄子頁
+            ├─ B3 客戶 CRM 索引子頁
+            ├─ 🤖 AI 執行規格子頁
+            └─ 連結至其他 PMO 頁（法規／SBIR／TTA／乳超）</pre>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec2">
+  <h2><span class="n">02</span>三段式週報工作流（v1.1 新增）</h2>
+  <p>週報工作流採三段式設計，一份 Google Sheet 驅動，AI 負責產出兩個方向的 HTML，週後再更新 Hub。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h4>週前｜分支 A2</h4>
+      <p>說「週報要出了」→ AI 讀 Sheet + Hub → 產對外 Dashboard HTML + 內部準備指南 HTML</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h4>週中｜你主持</h4>
+      <p>AI 不介入。你拿兩份 HTML 開會，10 分鐘主流程。</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h4>週後｜分支 A3</h4>
+      <p>說「週會結束了，這是逐字稿：[貼上]」→ AI 產 follow-up HTML + 更新 Hub</p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>階段</th><th>觸發指令</th><th>AI 輸出</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>週前（A2）</strong></td>
+        <td><code>週報要出了，幫我產本週 HTML</code></td>
+        <td>對外 Dashboard HTML + 內部準備指南 HTML</td>
+      </tr>
+      <tr>
+        <td><strong>週中</strong></td>
+        <td>（你主持週會）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>週後（A3）</strong></td>
+        <td><code>週會結束了，這是逐字稿：[貼上]</code></td>
+        <td>follow-up HTML + Hub 更新草稿</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Google Sheet 連結（已知，AI 不會問你）：</strong><br>
+    <code>https://docs.google.com/spreadsheets/d/1AaD6mkLP1-4k5yrDLBPzmeh6EMGpu6iPc1YdIMSKN-k/edit</code>
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec3">
+  <h2><span class="n">03</span>如何使用 Hub（人類操作）</h2>
+  <p>打開 Hub 後，由上到下依序看：</p>
+  <table>
+    <thead><tr><th width="200">區塊</th><th>用途</th><th width="160">何時看</th></tr></thead>
+    <tbody>
+      <tr><td><strong>🧭 Current Snapshot</strong></td><td>5 行內知道公司現況、最大阻塞、下一步、CEO 必知</td><td>每次打開都先看</td></tr>
+      <tr><td><strong>📊 Status Overview</strong></td><td>五大類全貌：00 營運 / 01 財務 / 02 法規 / 03 商務 / 04 研發</td><td>掌握全局時</td></tr>
+      <tr><td><strong>✅ Next Actions</strong></td><td>P0／P1 行動列表，含負責人、期限、阻塞</td><td>準備週工作時</td></tr>
+      <tr><td><strong>🔷 Decision Points</strong></td><td>待決策事項，含可選方案、需誰決策</td><td>準備做決策時</td></tr>
+      <tr><td><strong>⚠️ Risks / Blockers</strong></td><td>當前風險與阻塞，含建議處理</td><td>規劃資源時</td></tr>
+      <tr><td><strong>❓ Pending Confirmations</strong></td><td>待確認的問題（R 系列 / UC 系列）</td><td>回收懸而未決時</td></tr>
+      <tr><td><strong>📁 Evidence & Files</strong></td><td>外部檔案索引（Word／HTML／PPT／PDF）</td><td>找特定檔案時</td></tr>
+      <tr><td><strong>🔗 Connected Projects</strong></td><td>跨頁導覽（法規／SBIR／TTA／乳超／CRM）</td><td>進入子專案時</td></tr>
+      <tr><td><strong>📦 Meeting Archive</strong></td><td>會議紀錄索引（不放全文）</td><td>追溯某次會議時</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>30 秒測試：</strong>打開 Hub，看 Current Snapshot ＋ Status Overview 前兩列，30 秒內應知道「現在哪邊最緊、下一步做什麼」。如果不行，Hub 該更新了。
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec4">
+  <h2><span class="n">04</span>30 秒決策判讀流程</h2>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h4>看 Snapshot</h4><p>「CEO 需立刻知道的一件事」是什麼？</p></div>
+    <div class="step"><div class="num">2</div><h4>看 Next Actions P0</h4><p>本週優先 1–3 件事？阻塞是什麼？</p></div>
+    <div class="step"><div class="num">3</div><h4>看 Decision Points</h4><p>有沒有等你決策的事？需召集誰？</p></div>
+    <div class="step"><div class="num">4</div><h4>看 Risks</h4><p>高優先風險有變化嗎？</p></div>
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec5">
+  <h2><span class="n">05</span>五大類識別（00–04）</h2>
+  <p>v1.1 起，Hub 工作分類改為與週報任務追蹤表一致的五大類，取代舊有八軸線。</p>
+  <table>
+    <thead><tr><th width="120">類別</th><th>主要關鍵詞</th></tr></thead>
+    <tbody>
+      <tr><td><strong>00 營運治理</strong></td><td>董事會、股東會、章程、董事改選、翊鳳、出勤、人員、行政、週報、Excel、辦公室</td></tr>
+      <tr><td><strong>01 財務資金</strong></td><td>國發天使、募資、Pitch Deck、估值、Stone、名人混凝土、普訊、水源、SIC、綻放、天使輪、股權</td></tr>
+      <tr><td><strong>02 法規品質</strong></td><td>TFDA、QMS、ISO 13485、FDA、510(k)、SBD、HSA、林博士、CAPA、複審、查驗登記</td></tr>
+      <tr><td><strong>03 商務行銷</strong></td><td>HCC、Max Lu、成大醫院、耀瑄、睿傳、奇美、嘉基、World Gym、健檢套餐、自費碼、客戶、CRM、定價、BD、行銷</td></tr>
+      <tr><td><strong>04 研發數據</strong></td><td>佳世達、蘇老師、TTAS、SBIR、乳超、超音波、治具、技轉、研發、影像標註、TTA、計畫書</td></tr>
+    </tbody>
+  </table>
+  <div class="callout tip">內容跨類時，以主要目的為準。例如「翊鳳」主要屬 00 營運；公司宣傳主要屬 03 商務。</div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec6">
+  <h2><span class="n">06</span>如何請 AI 檢視系統</h2>
+  <p>想知道公司現況但不想自己讀整個 Hub 時，直接說：</p>
+  <div class="card-grid">
+    <div class="card"><div class="label">分支 B · 只讀不寫</div><div class="quote">「巨明現況？」</div><div class="desc">AI 讀 Snapshot + Status Overview，回報全局摘要，不做任何修改。</div></div>
+    <div class="card"><div class="label">單軸線查詢</div><div class="quote">「HCC 下一步？」</div><div class="desc">AI 只讀 03 商務行銷軸線相關列，節省 token。</div></div>
+    <div class="card"><div class="label">決策清單</div><div class="quote">「我有什麼要決定的？」</div><div class="desc">AI 讀 Decision Points，列出 Open 狀態項目。</div></div>
+    <div class="card"><div class="label">風險查詢</div><div class="quote">「目前風險？」</div><div class="desc">AI 讀 Risks + Pending Confirmations，回報高優先項目。</div></div>
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec7">
+  <h2><span class="n">07</span>如何請 AI 更新系統</h2>
+  <table>
+    <thead><tr><th width="80">分支</th><th width="180">用途</th><th>觸發短指令範例</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag">A</span></td><td>會議後回寫</td><td>「HCC 會議開完了」「林博士法規會議整理一下」</td></tr>
+      <tr><td><span class="tag emerald">A2</span></td><td>週報前 HTML</td><td>「週報要出了，幫我產本週 HTML」「Sheet 更新完了」</td></tr>
+      <tr><td><span class="tag emerald">A3</span></td><td>週報後更新</td><td>「週會結束了，這是逐字稿：[貼上]」</td></tr>
+      <tr><td><span class="tag indigo">B</span></td><td>狀態查詢（只讀）</td><td>「巨明現況？」「HCC 進度？」</td></tr>
+      <tr><td><span class="tag">C</span></td><td>進度更新</td><td>「成大正式採購完成了」「翊鳳開始建週報」</td></tr>
+      <tr><td><span class="tag amber">D</span></td><td>決策／風險登錄</td><td>「合作模式底線要決定」「Max 提醒募資規模太小」</td></tr>
+      <tr><td><span class="tag">E</span></td><td>外部檔案索引</td><td>「會議紀錄 docx 完成了」「HTML 儀表板產好了」</td></tr>
+      <tr><td><span class="tag">F</span></td><td>待確認關閉</td><td>「R2 已確認了」「UC04 不調整」</td></tr>
+      <tr><td><span class="tag rose">G</span></td><td>結構調整提案（僅計畫）</td><td>「軸線要不要加 IP？」</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 分支 G 注意：</strong>結構調整一定是「先提計畫、不直接改」。AI 會給你影響範圍與確認問題，你決定後才執行。
+  </div>
+  <p>AI 更新四步驟：</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h4>你說短指令</h4><p>例如「HCC 會議開完了」</p></div>
+    <div class="step"><div class="num">2</div><h4>AI 宣告分支</h4><p>「進入分支 A · 會議後回寫」</p></div>
+    <div class="step"><div class="num">3</div><h4>AI 產草稿</h4><p>分區塊呈現要更新的內容</p></div>
+    <div class="step"><div class="num">4</div><h4>你說「好」</h4><p>AI 才呼叫 Notion API 寫入</p></div>
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec8">
+  <h2><span class="n">08</span>完整短指令範例</h2>
+
+  <h3>🗓 週報工作流（三段式）</h3>
+  <pre>週報要出了，幫我產本週 HTML           → 分支 A2（週前）
+Sheet 更新完了，幫我出會議版          → 分支 A2（週前）
+週會結束了，這是逐字稿：[貼上]        → 分支 A3（週後）
+週會開完了，結論是：[貼上]            → 分支 A3（週後）</pre>
+
+  <h3>🏢 會議後</h3>
+  <pre>HCC 會議開完了
+林博士法規會議紀錄整理一下
+蔡醫師會議完成，重點整理
+剛跟 Stone 聊完，更新一下
+董事會開完了</pre>
+
+  <h3>✅ 進度變化</h3>
+  <pre>成大正式採購完成了
+耀瑄合約簽了
+國發天使送件完成
+QMS 缺失 1、5、7 已關閉
+SBIR 計畫書送件了
+翊鳳開始建週報</pre>
+
+  <h3>⚠️ 新決策／新風險</h3>
+  <pre>合作模式底線要決定
+Max 提醒募資規模太小，列風險
+佳世達合約條款有疑慮
+股東常會日期確定是 6/25，更新進去</pre>
+
+  <h3>📁 新檔案</h3>
+  <pre>會議紀錄 docx 完成了，幫我索引
+HTML 儀表板產好了
+新版 Pitch Deck 上傳</pre>
+
+  <h3>🔍 查詢（只讀）</h3>
+  <pre>巨明現況？
+HCC 下一步？
+法規軸線狀況？
+目前有什麼要決定的？
+風險清單？
+待確認還有哪些？</pre>
+
+  <h3>✅ 待確認關閉</h3>
+  <pre>R2 HCC 背景已確認
+UC04 軸線不調整
+UC05 願景錨點先維持原樣</pre>
+
+  <h3>📊 Notion 與 Google Sheet</h3>
+  <pre>Sheet 有沒有跟 Hub 不一致的地方？
+巨明月覆盤</pre>
+
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec9">
+  <h2><span class="n">09</span>維護工作流：日／週／月</h2>
+
+  <h3>📌 日（事件觸發）</h3>
+  <ul>
+    <li>會議結束、檔案產出、重要決策、新風險出現 → 一句短指令請 AI 回寫</li>
+    <li>進入決策前 → 「{某事} 現況？」讓 AI 摘要</li>
+  </ul>
+
+  <h3>📅 週（10 分鐘，分三段）</h3>
+  <ol>
+    <li><strong>週前</strong>：說「週報要出了」→ AI 讀 Sheet + Hub → 產兩份 HTML</li>
+    <li><strong>週中</strong>：拿 HTML 開週會</li>
+    <li><strong>週後</strong>：說「週會結束了，逐字稿：[貼上]」→ AI 產 follow-up HTML + 更新 Hub</li>
+  </ol>
+
+  <h3>📆 月（30 分鐘）</h3>
+  <ol>
+    <li>說「巨明月覆盤」→ AI 跑全 Hub 一致性檢查</li>
+    <li>檢視 Risks / Blockers：過期的標「已解除」</li>
+    <li>檢視 Evidence & Files：補齊「待確認」欄位</li>
+    <li>確認 Connected Projects Index 子頁狀態是否過時</li>
+  </ol>
+  <div class="callout tip">月度檢視上限 30 分鐘。若發現需要重大重構，記下來，週末或專門時段處理。</div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec10">
+  <h2><span class="n">10</span>最低摩擦維護原則</h2>
+
+  <h3>✅ 鼓勵</h3>
+  <ul>
+    <li>短指令越短越好，手機語音都能用</li>
+    <li>看到草稿覺得 OK，回「好」一個字就夠</li>
+    <li>AI 路由錯了，糾正就好，AI 不會重問已說過的內容</li>
+    <li>不確定該不該寫，先用分支 B 查現況</li>
+  </ul>
+
+  <h3>❌ 避免</h3>
+  <ul>
+    <li>把長段背景貼進 Hub — 長段資料放 Archive，Hub 只放索引</li>
+    <li>同樣資訊放兩個地方 — Hub 與子頁只能有一個是 Source of Truth</li>
+    <li>因為新點子就新建頁面 — 先問：能不能加進既有 Hub？</li>
+    <li>讓 AI 自由寫入 — 除非明確說「直接寫」，否則維持草稿模式</li>
+  </ul>
+
+  <div class="callout danger">
+    <strong>🚫 紅線（AI 絕不會做，你也別繞過）：</strong><br>
+    不編造事實（owner、期限、決策、客戶名、法規結論）；不刪歷史；不建大型資料庫；不把 SBIR/TTA/國發升格為頂層分類；分支 G 不直接改架構。
+  </div>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec11">
+  <h2><span class="n">11</span>Project Instructions 快速貼上版</h2>
+  <p>進入 Claude Project Settings → Project Instructions → 全選貼入以下內容 → 儲存：</p>
+  <pre>## 巨明生醫公司決策中心｜AI 執行規格 v1.1
+
+### 角色設定
+你是巨明生醫公司決策中心維護員。每次對話開始時，先 fetch Notion 頁面：
+- AI 執行規格：366fdbfb-5839-81cb-a91d-e9bc714cec3d
+- 主 Hub：361fdbfb-5839-81fb-bdbd-e7d39b75eee6
+讀完後，第一句話必須宣告：「進入分支 X · 因為 Y」
+
+### 分支路由表
+A  過去式、「開完了」、「整理一下」→ 讀 Hub + 軸線；萃取變化；產草稿
+A2 「週報要出了」「Sheet 更新完」「週前」→ 讀 Google Sheet + Hub；產對外 Dashboard HTML + 內部準備指南 HTML；不寫入 Hub
+A3 「週會結束了」「逐字稿來了」「週後」→ 讀逐字稿；產 follow-up HTML；更新 Hub
+B  「現況？」「下一步？」「幫我看」→ 只讀不寫；回報 Snapshot + 軸線
+C  「完成了 X」「X 改成 Y」→ 更新對應軸線列
+D  「要決定」「風險是」→ 寫入 Decision Points / Risks
+E  「docx 完成」「HTML 產好了」→ 更新 Evidence & Files
+F  「已確認」「已知道了」→ 關閉 Pending Confirmations
+G  「要不要改架構」「新增軸線」→ 僅提計畫，不呼叫 Notion API
+
+### 五大類識別（00–04）
+00 營運治理：股東會、董事會、章程、翊鳳、出勤、人員、行政、週報、Excel、辦公室
+01 財務資金：國發天使、募資、Pitch Deck、估值、Stone、普訊、水源、SIC、天使輪、股權
+02 法規品質：TFDA、QMS、ISO 13485、FDA、510(k)、SBD、林博士、CAPA、複審、查驗登記
+03 商務行銷：HCC、Max Lu、成大、耀瑄、睿傳、奇美、嘉基、World Gym、健檢套餐、自費碼、客戶、CRM、BD
+04 研發數據：佳世達、蘇老師、TTAS、SBIR、乳超、超音波、治具、技轉、研發、影像標註、TTA、計畫書
+
+### 已知資源（不重問）
+- Hub ID：361fdbfb-5839-81fb-bdbd-e7d39b75eee6
+- Google Sheet：https://docs.google.com/spreadsheets/d/1AaD6mkLP1-4k5yrDLBPzmeh6EMGpu6iPc1YdIMSKN-k/edit
+  連結失效或使用者明確更換時才詢問
+
+### 核心規則
+- 回問配額：A/C/D/E 最多 2 題；B 0 題；G 最多 1 題
+- 草稿模式：所有寫入等使用者說「好」才執行
+- 不編造事實、不刪歷史、不建大型資料庫
+- 不把 SBIR/TTA/國發天使升格為人生頂層分類
+- 分支 B 禁止任何寫入；分支 G 僅提計畫
+
+### 結束回報格式
+✅ 已完成 / 🔍 Agent 觀察（觸發事件 + 草稿狀態）/ 🟡 未處理 / ❓ 待確認 / → 下一個最小行動</pre>
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<section id="sec12">
+  <h2><span class="n">12</span>疑問排解（FAQ）</h2>
+
+  <h3>Q1：AI 路由錯了怎麼辦？</h3>
+  <p>直接糾正，例如「不是查詢，是要回寫」。AI 立即切換分支，不重複問已說過的內容。</p>
+
+  <h3>Q2：AI 一直問問題怎麼辦？</h3>
+  <p>規格規定每分支最多 2 題。如果 AI 問第 3 題，直接說「先給草稿」，AI 應立即停止提問。</p>
+
+  <h3>Q3：AI 問 Google Sheet 連結怎麼辦？</h3>
+  <p>說「Sheet 連結已在規格中，不需要問我」。確認 Project Instructions 已包含 Sheet 連結（見第十一節）。</p>
+
+  <h3>Q4：想讓 AI 直接寫入，不看草稿？</h3>
+  <p>說「直接寫」或「不要再問了直接做」。AI 在本次對話啟用直寫模式。下次新對話會回到預設草稿模式。</p>
+
+  <h3>Q5：換了 AI 工具（ChatGPT）怎麼辦？</h3>
+  <p>把 AI 執行規格 MD 或本手冊的第十一節 Project Instructions 文字給它即可，規則跨工具適用。</p>
+
+  <h3>Q6：AI 沒有 Notion 連線怎麼辦？</h3>
+  <p>把 Hub Current Snapshot 與 Status Overview 貼上一次，AI 產出 Notion-ready 草稿區塊供你手動貼入。</p>
+
+  <h3>Q7：軸線要怎麼增加或調整？</h3>
+  <p>說「00–04 要不要加一個 XX 類？」→ AI 進入分支 G，給影響範圍與確認問題 → 你確認後再執行。</p>
+
+  <h3>Q8：週報 HTML 產出後不滿意怎麼辦？</h3>
+  <p>直接說「第三項改成 XX」或「重新產對外 Dashboard」，AI 會重跑 A2 分支。不需要重新提供 Sheet 連結。</p>
+
+  <a class="back" href="#top">↑ 回目錄</a>
+</section>
+
+<hr class="divider">
+<footer>
+  巨明生醫公司決策中心｜使用者操作手冊 v1.1｜2026-05-20<br>
+  Hub Page ID: 361fdbfb-5839-81fb-bdbd-e7d39b75eee6 ·
+  AI 執行規格子頁: 366fdbfb-5839-81cb-a91d-e9bc714cec3d
+</footer>
+
+</main>
+</body>
+</html>
