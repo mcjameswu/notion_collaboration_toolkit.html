@@ -1,1 +1,261 @@
-test
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人 AI 作業系統 × 開源維護者引擎｜教戰守則</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f4ec;
+    --paper-2:#fffdf7;
+    --ink:#23201a;
+    --ink-soft:#5c564b;
+    --line:#e0d9c8;
+    --accent:#b5471f;
+    --accent-2:#1f6f5c;
+    --gold:#a8862c;
+    --green-dot:#2f8f5b;
+    --blue-dot:#3a6ea5;
+    --shadow:0 1px 0 rgba(0,0,0,.04), 0 12px 30px -18px rgba(40,30,10,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 12% -8%, #fbf6ea 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #f1ece0 0%, transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans TC",system-ui,sans-serif;
+    line-height:1.85;
+    letter-spacing:.01em;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 120px;position:relative;z-index:1;}
+  header.hero{padding:72px 0 40px;border-bottom:3px double var(--line);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+  h1.title{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(30px,5.4vw,52px);line-height:1.18;margin:14px 0 10px;letter-spacing:.01em;}
+  h1.title .em{color:var(--accent);}
+  .subtitle{font-family:"Noto Serif TC",serif;font-weight:500;font-size:clamp(15px,2.4vw,19px);color:var(--ink-soft);}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;font-family:"JetBrains Mono",monospace;font-size:12px;}
+  .pill{border:1px solid var(--line);background:var(--paper-2);padding:5px 11px;border-radius:999px;color:var(--ink-soft);}
+  .pill b{color:var(--ink);font-weight:600;}
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:34px 0 8px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper-2);box-shadow:var(--shadow);}
+  .stage{padding:18px 16px;border-right:1px solid var(--line);position:relative;}
+  .stage:last-child{border-right:none;}
+  .stage .no{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);letter-spacing:.2em;}
+  .stage .nm{font-family:"Noto Serif TC",serif;font-weight:700;font-size:18px;margin-top:4px;}
+  .stage .ds{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  .stage::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;}
+  .stage.s1::after{background:var(--accent);}
+  .stage.s2::after{background:var(--gold);}
+  .stage.s3::after{background:var(--accent-2);}
+  nav.toc{margin:38px 0 10px;padding:20px 22px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);box-shadow:var(--shadow);}
+  nav.toc .lbl{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.28em;color:var(--accent);text-transform:uppercase;}
+  nav.toc ol{margin:12px 0 0;padding-left:0;counter-reset:t;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px 26px;}
+  nav.toc li{counter-increment:t;font-size:14.5px;}
+  nav.toc li::before{content:"0" counter(t);font-family:"JetBrains Mono",monospace;color:var(--gold);margin-right:9px;font-size:12px;}
+  nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;}
+  nav.toc a:hover{border-color:var(--accent);}
+  section{padding-top:46px;scroll-margin-top:20px;}
+  h2{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(21px,3.4vw,28px);margin:0 0 4px;display:flex;align-items:baseline;gap:12px;}
+  h2 .sn{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--accent);font-weight:600;}
+  h2 + .lead{color:var(--ink-soft);margin:2px 0 18px;font-size:15px;}
+  h3{font-family:"Noto Serif TC",serif;font-weight:700;font-size:18px;margin:26px 0 8px;color:var(--ink);}
+  p{margin:0 0 14px;}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:var(--shadow);}
+  .card.accent{border-left:4px solid var(--accent);}
+  .card.green{border-left:4px solid var(--accent-2);}
+  .card.gold{border-left:4px solid var(--gold);}
+  ul.clean{margin:6px 0 14px;padding-left:0;list-style:none;}
+  ul.clean li{position:relative;padding-left:24px;margin:8px 0;}
+  ul.clean li::before{content:"▸";position:absolute;left:4px;color:var(--accent);font-weight:700;}
+  .tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;padding:2px 8px;border-radius:5px;margin-right:6px;vertical-align:middle;}
+  .tag.green{background:rgba(47,143,91,.13);color:#206b41;}
+  .tag.blue{background:rgba(58,110,165,.13);color:#2c5582;}
+  .tag.gold{background:rgba(168,134,44,.16);color:#806311;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:#efe9da;font-family:"Noto Serif TC",serif;font-weight:700;font-size:13.5px;}
+  tr:last-child td{border-bottom:none;}
+  .codeline{font-family:"JetBrains Mono",monospace;font-size:13px;background:#efe9da;border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:10px 0;color:var(--ink);overflow-x:auto;}
+  .checklist{counter-reset:c;list-style:none;padding-left:0;margin:14px 0;}
+  .checklist li{counter-increment:c;position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed var(--line);}
+  .checklist li::before{content:"☐";position:absolute;left:8px;top:9px;font-size:18px;color:var(--accent-2);}
+  .checklist li:last-child{border-bottom:none;}
+  .pendingbox{background:rgba(58,110,165,.07);border:1px dashed var(--blue-dot);border-radius:10px;padding:14px 18px;margin:14px 0;}
+  .pendingbox b{color:var(--blue-dot);}
+  .footnote{margin-top:60px;padding-top:20px;border-top:3px double var(--line);font-size:13px;color:var(--ink-soft);font-family:"JetBrains Mono",monospace;}
+  .loop{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-family:"Noto Serif TC",serif;font-weight:700;margin:8px 0;}
+  .loop span{background:var(--paper-2);border:1px solid var(--line);padding:7px 14px;border-radius:999px;}
+  .loop .arr{color:var(--accent);font-family:"JetBrains Mono",monospace;font-weight:600;}
+  a.ilink{color:var(--accent-2);text-decoration:none;border-bottom:1px solid var(--line);}
+  a.ilink:hover{border-color:var(--accent-2);}
+  @media(max-width:640px){nav.toc ol{grid-template-columns:1fr;}.stages{grid-template-columns:1fr;}.stage{border-right:none;border-bottom:1px solid var(--line);}.stage:last-child{border-bottom:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Codex for Open Source · 工作流養成手冊</div>
+    <h1 class="title">🤖 個人 AI 作業系統<br>× <span class="em">開源維護者引擎</span></h1>
+    <div class="subtitle">養成 → 實戰 → 產品化（從自用到可賣）</div>
+    <div class="meta-row">
+      <span class="pill"><b>版本</b>　v1.0</span>
+      <span class="pill"><b>日期</b>　2026-06-02</span>
+      <span class="pill"><b>語言</b>　台灣繁體中文</span>
+      <span class="pill"><b>性質</b>　教戰守則（搭配 Notion 專案筆記）</span>
+    </div>
+
+    <div class="stages">
+      <div class="stage s1"><div class="no">STAGE 01</div><div class="nm">養成</div><div class="ds">查現況、盤點 repo、補維護紀錄、送件、開通資源</div></div>
+      <div class="stage s2"><div class="no">STAGE 02</div><div class="nm">實戰</div><div class="ds">個人工作流試跑、導入公司開發流程、內部系統雛形</div></div>
+      <div class="stage s3"><div class="no">STAGE 03</div><div class="nm">產品化</div><div class="ds">沉澱可複製資產、教學素材、個人品牌與產品雛形</div></div>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <div class="lbl">目錄 · Contents</div>
+    <ol>
+      <li><a href="#s1">為什麼建這個專案</a></li>
+      <li><a href="#s2">這份筆記的資訊基礎</a></li>
+      <li><a href="#s3">如何使用這份專案筆記</a></li>
+      <li><a href="#s4">如何更新它</a></li>
+      <li><a href="#s5">如何用它做決策</a></li>
+      <li><a href="#s6">如何從它學習</a></li>
+      <li><a href="#s7">如何讓系統持續演進</a></li>
+      <li><a href="#s8">待確認事項與紅線</a></li>
+    </ol>
+  </nav>
+
+  <section id="s1">
+    <h2><span class="sn">01</span> 為什麼建這個專案</h2>
+    <p class="lead">一句定位：把「申請免費 AI 資源」這件事，升級成「為自己建一套可長期運轉、最終能教能賣的 AI 作業系統」。</p>
+    <p>OpenAI 推出的「Codex for Open Source」會給通過審核的開源維護者：六個月 ChatGPT Pro（含 Codex）、來自 100 萬美元基金的 API credit，以及逐案審核的 Codex Security。價值約 1,200 美元。但這份專案的核心目的<b>不是領免費額度</b>——額度六個月會用完，留下來的應該是一套工作流。</p>
+    <div class="card accent"><p style="margin:0;">真正的資產是：把 Codex、API credit、安全工具，接到您<b>真實的維護工作</b>上——更快的 PR review、更好的 Issue 分類、更省力的 release notes，騰出時間給架構、品質與決策。這條動線跑順之後，本身就是可以教學、可以產品化的東西。</p></div>
+    <h3>三個戰略目的</h3>
+    <ul class="clean">
+      <li><b>個人日常工作流</b>：在公司專案、文件、寫程式、系統管理、AI 協作上提升效率。</li>
+      <li><b>公司軟體系統工作流</b>：逐步把 Codex、API 自動化、AI 輔助 Code Review、Issue 管理、CI/CD、安全檢查導入巨明生醫的開發流程。</li>
+      <li><b>個人品牌與未來產品化</b>：把這套工作流沉澱成可教、可複製、可賣的知識／服務／工作流產品。</li>
+    </ul>
+  </section>
+
+  <section id="s2">
+    <h2><span class="sn">02</span> 這份筆記的資訊基礎</h2>
+    <p class="lead">把「已確認 / 假設 / 待確認」分清楚，是這套系統的資料紀律。</p>
+    <table>
+      <tr><th>類別</th><th>內容</th><th>狀態</th></tr>
+      <tr><td>方案存在</td><td>OpenAI Codex for Open Source 確實存在並開放申請；官方表單收 GitHub profile 與 public repo</td><td><span class="tag green">已確認</span></td></tr>
+      <tr><td>提供內容</td><td>6 個月 ChatGPT Pro + Codex、API credit（來自 100 萬美元基金）、Codex Security（逐案、選擇性給予）</td><td><span class="tag green">已確認</span></td></tr>
+      <tr><td>審查依據</td><td>repo 使用度、生態重要性、近期維護活躍度（PR review／Issue triage／release 管理）；對象為有 write access 的核心維護者</td><td><span class="tag green">已確認</span></td></tr>
+      <tr><td>Star 門檻</td><td>官方頁面未明訂硬性 Star 門檻；部分二手報導提到「至少 1,000 stars」</td><td><span class="tag blue">待確認</span></td></tr>
+      <tr><td>價值約值</td><td>約 1,200 美元（多為媒體換算，非官方逐項標價）</td><td><span class="tag gold">假設</span></td></tr>
+    </table>
+    <div class="pendingbox"><b>🔵 資料紀律提醒：</b>送件前以 OpenAI 官方表單與說明頁的當下敘述為準，不採信二手數字。Star 門檻一律當「待確認」，不要因為看到「1,000 stars」就自我否決——官方明說「不完全符合條件但對生態重要者也歡迎申請」。</div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="sn">03</span> 如何使用這份專案筆記</h2>
+    <p class="lead">這頁是「內容層全文」，入口層只放一行指標連到這裡。</p>
+    <ul class="clean">
+      <li><b>打開先看頁首定位區塊</b>：30 秒判斷「本頁是什麼／給誰讀／何時讀／現役或歷史」，決定要不要繼續往下。</li>
+      <li><b>找當前該做什麼</b>：直接跳到專案筆記的「執行路線圖」，看您現在卡在養成／實戰／產品化哪一段。</li>
+      <li><b>要做決策時</b>：看「決策點 Decision Points」與「風險 Risks」兩區。</li>
+      <li><b>AI 接手時</b>：AI 從規則層（AI 執行規格）先讀到本檔指標，再依任務跳本頁，不必全讀。</li>
+    </ul>
+    <div class="card green"><p style="margin:0;"><b>低摩擦原則：</b>不要每次都從頭讀完。頁首定位區塊 + 路線圖當前段落，就是您 90% 情況下唯一需要看的兩塊。</p></div>
+  </section>
+
+  <section id="s4">
+    <h2><span class="sn">04</span> 如何更新它</h2>
+    <p class="lead">純追加、不就地改寫，是本環境（無 fetch、就地改字風險高）的鐵則。</p>
+    <ul class="clean">
+      <li><b>進度推進</b>：在「執行路線圖」對應步驟後追加一行狀態（✅完成／🔄進行中／⏸暫停），不刪舊行。</li>
+      <li><b>待確認關閉</b>：🔵 項目得到答案後，<b>追加</b>一行確認結果，原行保留作歷史。</li>
+      <li><b>新決策／風險</b>：往 Decision Points／Risks 區追加，標日期。</li>
+      <li><b>外部檔索引</b>：產出 HTML／docx 後，在「Evidence & Files」追加一行連結，不把內容搬進 Notion。</li>
+    </ul>
+    <div class="codeline">索引行統一格式：　[圖示] 檔名｜一句定位｜現役/歷史｜→ 連結</div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="sn">05</span> 如何用它做決策</h2>
+    <p class="lead">這套系統的決策原則：來源優先序清楚，衝突不猜。</p>
+    <table>
+      <tr><th>情境</th><th>決策依據</th></tr>
+      <tr><td>要不要申請 / repo 夠不夠格</td><td>看「資訊基礎」表＋官方表單當下敘述；門檻不明時當待確認，傾向「先送件、由 OpenAI 判定」而非自我否決</td></tr>
+      <tr><td>資源該先用在哪</td><td>看三戰略目的的優先序：先個人工作流（驗證價值）→ 再公司流程（規模化）→ 最後產品化（變現）</td></tr>
+      <tr><td>資訊衝突</td><td>來源優先序：原始材料 &gt; 專案頁錨點 &gt; Hub &gt; 衍生快照；衝突不猜，標「待確認」</td></tr>
+      <tr><td>涉及對外承諾／合約／數字</td><td>一律先產草稿、待您說「好」才定案</td></tr>
+    </table>
+  </section>
+
+  <section id="s6">
+    <h2><span class="sn">06</span> 如何從它學習</h2>
+    <p class="lead">這份筆記同時是「教材的原料」——產品化階段不必重寫，直接抽取。</p>
+    <ul class="clean">
+      <li><b>每個試跑都留下「之前 vs 之後」</b>：例如 PR review 從 30 分鐘降到 8 分鐘，這個數字就是未來教學與銷售的證據。</li>
+      <li><b>把「踩到的坑」寫進錯誤教訓</b>：別人最想買的往往不是成功路徑，而是「怎麼避開你踩過的雷」。</li>
+      <li><b>方法論抽離個案</b>：當某個工作流跑順三次以上，把它抽成不綁特定 repo 的通用步驟，這就是可教可賣的單元。</li>
+    </ul>
+  </section>
+
+  <section id="s7">
+    <h2><span class="sn">07</span> 如何讓系統持續演進</h2>
+    <p class="lead">三段關卡不是線性走完就結束，而是一個會回流的循環。</p>
+    <div class="loop"><span>養成</span><span class="arr">→</span><span>實戰</span><span class="arr">→</span><span>產品化</span><span class="arr">↺</span><span>回養成（新工具／新需求）</span></div>
+    <ul class="clean">
+      <li><b>季度回顧</b>：每季檢視「哪些工作流跑順了、哪些還在試、六個月資源用到哪」。</li>
+      <li><b>資源到期前一個月</b>：評估付費續用 vs 轉用其他工具，避免斷檔。把這條當待辦排進去。</li>
+      <li><b>每跑順一個工作流，就問一句</b>：「這能不能變成一篇教學／一個模板／一個服務？」能，就往產品化區追加一筆。</li>
+    </ul>
+    <div class="card gold"><p style="margin:0;"><b>動力鉤子：</b>關卡式進度本身就是動力來源。每次打開看到「養成 3/5、實戰 1/4、產品化 0/3」，會自然想把進度條往前推一格。</p></div>
+  </section>
+
+  <section id="s8">
+    <h2><span class="sn">08</span> 待確認事項與紅線</h2>
+    <h3>🔵 待確認（送件前覆核）</h3>
+    <ul class="clean">
+      <li>OpenAI 官方表單的當下欄位與條件（以官網為準）。</li>
+      <li>是否有硬性 Star／下載量門檻（目前官方未明訂）。</li>
+      <li>Codex Security 是否核給（逐案審核，不保證）。</li>
+      <li>哪一個 public repo 最適合當送件主角（需先盤點）。</li>
+    </ul>
+    <h3>🚫 紅線（不可違反）</h3>
+    <ul class="clean">
+      <li>不編造資格條件、福利、審核標準、申請細節。</li>
+      <li>不把本專案升為人生頂層分類（掛在公司面向之下）。</li>
+      <li>不新建大型資料庫或平行系統（單頁全文 + 一行索引）。</li>
+      <li>不刪歷史、不就地改寫既有 block，索引一律純追加。</li>
+    </ul>
+    <div class="checklist-wrap">
+      <h3>✅ 送件前最小檢查清單</h3>
+      <ol class="checklist">
+        <li>已到官方表單頁確認當下條件與欄位</li>
+        <li>已盤點 public repo，選定送件主角</li>
+        <li>repo 近 3–6 個月有可見的 PR／Issue／Release／commit</li>
+        <li>已備妥可量化證據（Stars／Forks／contributors／下載量／下游依賴）</li>
+        <li>已寫清楚維護者角色、日常工作流、Codex／API／自動化的使用規劃</li>
+        <li>🔵 項目皆標待確認，未當成事實寫死</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="footnote">
+    文件結束　·　搭配 Notion 專案筆記「🤖 個人 AI 作業系統 × 開源維護者引擎」使用<br>
+    本手冊為教戰守則（怎麼用），方法論單一權威以 File3「系統架構解題與除錯方法論」為準。<br>
+    v1.0 · 2026-06-02 · 台灣繁體中文
+  </div>
+
+</div>
+</body>
+</html>
