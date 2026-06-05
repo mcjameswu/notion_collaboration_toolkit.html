@@ -1,5 +1,742 @@
 <!DOCTYPE html>
-<html lang='zh-Hant-TW'>
-<head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Deploying...</title></head>
-<body><p>Deploying interactive HTML...</p></body>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加密投資｜課前 7 日自學手冊（互動版・6/6–6/12）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf7f0; --paper2:#f3efe4; --card:#ffffff;
+    --ink:#1f2430; --ink-soft:#4f5667; --ink-dim:#8b91a0;
+    --line:#e6e0d2; --line2:#d8d1bf;
+    --accent:#1f6f6b; --accent-soft:#e3f0ee;
+    --gold:#b5832e; --gold-soft:#f6ecd6;
+    --rose:#b5455f; --rose-soft:#fbe6ea;
+    --amber:#c8841f; --amber-soft:#fbeed4;
+    --green:#2f7d4f; --green-soft:#e2f2e7;
+    --blue:#2f5fa6; --blue-soft:#e6eef9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Noto Sans TC',sans-serif;
+    background:
+      radial-gradient(900px 500px at 88% -10%, rgba(31,111,107,.08), transparent 60%),
+      radial-gradient(700px 400px at -5% 8%, rgba(181,131,46,.07), transparent 55%),
+      var(--paper);
+    color:var(--ink); line-height:1.75; letter-spacing:.01em; padding-bottom:90px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+
+  /* HERO */
+  header.hero{padding:56px 0 28px;position:relative;overflow:hidden}
+  .hero-rule{height:5px;width:64px;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;margin-bottom:20px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(28px,5vw,48px);line-height:1.14;color:var(--ink);margin-bottom:14px}
+  h1 .sub{display:block;font-size:clamp(15px,2.4vw,21px);font-weight:500;color:var(--accent);margin-top:8px;font-family:'Noto Sans TC',sans-serif}
+  .lede{font-size:16px;color:var(--ink-soft);max-width:720px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+  .chip b{color:var(--gold)}
+
+  /* progress dashboard */
+  .dash{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-top:22px;flex-wrap:wrap}
+  .dash .bar-wrap{flex:1;min-width:200px}
+  .dash .bar-bg{height:10px;background:var(--paper2);border-radius:6px;overflow:hidden}
+  .dash .bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:6px;transition:width .5s ease}
+  .dash .pct{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--accent);font-size:18px;white-space:nowrap}
+  .dash .lbl{font-size:12px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace}
+  .dash button{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 10px;cursor:pointer}
+  .dash button:hover{border-color:var(--rose);color:var(--rose)}
+
+  .note{display:flex;gap:14px;align-items:flex-start;background:var(--rose-soft);border:1px solid #f0c6cf;border-radius:14px;padding:16px 18px;margin-top:24px}
+  .note .ic{font-size:20px;line-height:1.4}
+  .note p{font-size:13.5px;color:#7d2d3e}
+  .note b{color:#9c2740}
+
+  section{margin-top:40px}
+  .sh{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--line2);padding-bottom:10px;margin-bottom:18px}
+  .sh .n{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--gold)}
+  .sh h2{font-family:'Noto Serif TC',serif;font-weight:700;font-size:clamp(20px,3vw,26px);color:var(--ink)}
+  .sh .meta{margin-left:auto;font-size:13px;color:var(--ink-dim);text-align:right}
+
+  /* collapsible: native details/summary */
+  details{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 2px rgba(31,36,48,.04)}
+  details[open]{box-shadow:0 4px 14px rgba(31,36,48,.07)}
+  summary{list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:15px;user-select:none}
+  summary::-webkit-details-marker{display:none}
+  summary:hover{background:var(--paper2)}
+  .chev{flex:none;width:22px;height:22px;display:grid;place-items:center;color:var(--ink-dim);transition:transform .25s ease;font-size:13px}
+  details[open] .chev{transform:rotate(90deg)}
+  .d-badge{flex:none;width:50px;height:50px;border-radius:13px;display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:14px;line-height:1.05;text-align:center}
+  .d-title{flex:1;min-width:0}
+  .d-title h3{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1.3}
+  .d-title .date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-dim);margin-top:1px}
+  .d-status{flex:none;font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:20px;background:var(--paper2);color:var(--ink-dim);border:1px solid var(--line)}
+  .d-status.done{background:var(--green-soft);color:var(--green);border-color:#b9dcc5}
+  .d-body{padding:4px 22px 22px}
+  @media(max-width:560px){.d-title h3{font-size:16px}.d-status{display:none}}
+
+  .obj-line{display:flex;gap:10px;background:var(--accent-soft);border-radius:10px;padding:11px 14px;margin-bottom:14px}
+  .obj-line .lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);white-space:nowrap;padding-top:3px}
+  .obj-line p{font-size:13.5px;color:#1b5552;margin:0}
+
+  /* tiers */
+  .tier{border-top:1px solid var(--line);padding:14px 0 4px}
+  .tier:first-of-type{border-top:none}
+  .tier-head{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .tier-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:7px}
+  .t-min{background:var(--blue-soft);color:var(--blue)}
+  .t-std{background:var(--green-soft);color:var(--green)}
+  .t-adv{background:var(--gold-soft);color:var(--gold)}
+  .tier-time{font-size:12px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace}
+  .tier-goal{font-size:13.5px;color:var(--ink-soft);margin-bottom:7px}
+  .mats{list-style:none;display:grid;gap:6px}
+  .mats li{font-size:14px;color:var(--ink-soft);padding-left:19px;position:relative}
+  .mats li::before{content:'▸';position:absolute;left:2px;color:var(--accent);font-size:12px;top:1px}
+  .mats a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(31,111,107,.3)}
+  .mats a:hover{border-bottom-color:var(--accent)}
+  .src{font-size:11.5px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace}
+  .tbc{font-size:11px;color:var(--amber);background:var(--amber-soft);padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace}
+
+  /* QUIZ */
+  .quiz{margin-top:16px;border:1.5px solid var(--accent);border-radius:14px;overflow:hidden}
+  .quiz-head{background:var(--accent);color:#fff;padding:11px 16px;display:flex;align-items:center;gap:9px;font-weight:700;font-size:14.5px}
+  .quiz-head .qi{font-size:16px}
+  .quiz-body{padding:16px 18px 18px;background:var(--paper2)}
+  .q{margin-bottom:16px;padding-bottom:4px}
+  .q:last-of-type{margin-bottom:8px}
+  .q-stem{font-size:14.5px;font-weight:500;color:var(--ink);margin-bottom:9px}
+  .q-stem .qn{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:700;margin-right:6px}
+  .q-stem .flag{font-size:11px;color:var(--rose);background:var(--rose-soft);padding:1px 7px;border-radius:5px;margin-left:6px}
+  .opts{display:grid;gap:7px}
+  .opt{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer;font-size:14px;color:var(--ink-soft);transition:.15s}
+  .opt:hover{border-color:var(--accent)}
+  .opt .mk{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line2);display:grid;place-items:center;font-size:11px;font-weight:700;color:transparent;transition:.15s}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.correct{border-color:var(--green);background:var(--green-soft)}
+  .opt.correct .mk{border-color:var(--green);background:var(--green);color:#fff}
+  .opt.wrong{border-color:var(--rose);background:var(--rose-soft)}
+  .opt.wrong .mk{border-color:var(--rose);background:var(--rose);color:#fff}
+  .opt.locked{pointer-events:none}
+  .explain{display:none;margin-top:8px;font-size:13px;color:var(--ink-soft);background:var(--card);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 13px}
+  .explain.show{display:block}
+  .explain b{color:var(--ink)}
+  .quiz-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+  .btn{font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:10px;padding:10px 20px;cursor:pointer;transition:.15s}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#175a56}
+  .btn-ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-dim)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  /* result panel */
+  .result{display:none;margin-top:14px;border-radius:12px;padding:16px 18px;border:1.5px solid var(--line)}
+  .result.show{display:block}
+  .result.pass{background:var(--green-soft);border-color:#b9dcc5}
+  .result.fail{background:var(--amber-soft);border-color:#eccf9a}
+  .result .score{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--ink)}
+  .result h4{font-size:15px;margin:8px 0 6px;color:var(--ink)}
+  .result .verdict{font-size:14px;font-weight:700;margin-bottom:6px}
+  .result.pass .verdict{color:var(--green)}
+  .result.fail .verdict{color:var(--amber)}
+  .fixlist{list-style:none;display:grid;gap:8px;margin-top:6px}
+  .fixlist li{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 13px;font-size:13.5px;color:var(--ink-soft)}
+  .fixlist li b{color:var(--ink)}
+  .fixlist .how{display:block;margin-top:4px;font-size:12.5px;color:var(--accent)}
+  .selftest{margin-top:12px;background:var(--card);border:1px dashed var(--line2);border-radius:10px;padding:12px 14px}
+  .selftest .stt{font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+  .selftest label{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);margin-bottom:6px;cursor:pointer}
+  .selftest input{margin-top:4px;accent-color:var(--accent);flex:none}
+
+  /* prompt box */
+  .prompt{background:#1d2230;border-radius:11px;padding:14px 16px;margin:9px 0;position:relative}
+  .prompt .plab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7fd6c8;margin-bottom:7px;display:block}
+  .prompt code{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#e7e2d4;line-height:1.65;white-space:pre-wrap;display:block}
+  .copy{position:absolute;top:11px;right:11px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7fd6c8;background:rgba(127,214,200,.12);border:1px solid rgba(127,214,200,.3);border-radius:6px;padding:3px 9px;cursor:pointer}
+  .copy:hover{background:rgba(127,214,200,.22)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:14px;box-shadow:0 1px 2px rgba(31,36,48,.04)}
+  .card h3{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--accent);margin-bottom:11px}
+  .card h4{font-size:15px;font-weight:700;color:var(--ink);margin:13px 0 6px}
+  .card p{color:var(--ink-soft);font-size:14px;margin-bottom:8px}
+  .card p:last-child{margin-bottom:0}
+  strong{color:var(--ink);font-weight:700}
+  .log{background:var(--paper2);border:1px dashed var(--line2);border-radius:11px;padding:15px 18px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-soft);white-space:pre-wrap;line-height:1.85}
+  .legend{display:flex;flex-wrap:wrap;gap:9px}
+  .lg{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 12px}
+  .swatch{width:11px;height:11px;border-radius:3px}
+
+  footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--line2);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-dim)}
+
+  .anchor-nav{position:sticky;top:0;z-index:30;background:rgba(250,247,240,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0}
+  .anchor-nav .wrap{display:flex;gap:5px;flex-wrap:wrap}
+  .anchor-nav a{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);text-decoration:none;padding:4px 9px;border-radius:7px;border:1px solid transparent;white-space:nowrap}
+  .anchor-nav a:hover{background:var(--card);border-color:var(--line)}
+  .row-btns{display:flex;gap:8px;margin:6px 0 16px}
+  .mini{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .mini:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="anchor-nav">
+  <div class="wrap">
+    <a href="#how">使用說明</a>
+    <a href="#schedule">7日課表＋測驗</a>
+    <a href="#ai">AI 學習法</a>
+    <a href="#log">學習日誌</a>
+    <a href="#final">互動總複習</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-rule"></div>
+    <div class="eyebrow">Life Finance · Pre-Course Crash Study · Interactive</div>
+    <h1>加密投資課前 7 日自學手冊
+      <span class="sub">互動版・每天 30 分鐘・零基礎・為 6/13–6/14 實體課準備</span>
+    </h1>
+    <p class="lede">從「幾乎完全不懂」到「上課聽得懂、敢發問」。每天讀完<strong>馬上做當日測驗</strong>，立刻知道哪裡不熟、立刻拿到補強辦法——不用等到最後。各天可收合，從頭往下拉不會太長。</p>
+    <div class="chips">
+      <span class="chip"><b>目標</b>　聽懂課・能參與・建立風險意識</span>
+      <span class="chip"><b>每日</b>　約 30 分鐘</span>
+      <span class="chip"><b>區間</b>　6/6 → 6/12</span>
+      <span class="chip"><b>實體課</b>　6/13–6/14</span>
+    </div>
+
+    <div class="dash">
+      <span class="lbl">通過進度</span>
+      <div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" id="barFill"></div></div></div>
+      <span class="pct" id="pctText">0 / 7</span>
+      <button onclick="resetAll()">重設全部</button>
+    </div>
+
+    <div class="note">
+      <span class="ic">🛡️</span>
+      <p><b>定位聲明：</b>本手冊用於學習、風險意識、資產配置與決策品質，<b>不談投機、不保證獲利</b>。課程會教到「高利活存／放貸／套利／合約」等高風險項目——這些在台灣常被詐騙包裝。凡聽到「保證高利、穩賺、無風險、限時名額」，一律當 🚩 警訊先查證。</p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 使用說明 -->
+  <section id="how">
+    <div class="sh"><span class="n">00</span><h2>怎麼用這份手冊</h2><span class="meta">每天 5 步</span></div>
+    <details>
+      <summary><span class="chev">▶</span><div class="d-title"><h3>展開：每天的流程與三種強度</h3><div class="date">點一下看說明</div></div></summary>
+      <div class="d-body">
+        <p style="font-size:14px;color:var(--ink-soft)"><strong>每天流程：</strong>① 看「學習目標」一句話 → ② 依狀態選 <strong>最低／標準／進階</strong> → ③ 用任一材料學 → ④ 用 <strong>AI 學習法</strong> 整理 → ⑤ <strong>馬上做當天測驗</strong>，沒過就照測驗給的補強辦法回血，再寫 30 秒日誌。</p>
+        <h4 style="font-size:15px;margin:12px 0 6px;color:var(--ink)">三種強度怎麼選</h4>
+        <div class="legend">
+          <span class="lg"><span class="swatch" style="background:var(--blue)"></span>最低版　忙/累，只保住核心，約 10–15 分</span>
+          <span class="lg"><span class="swatch" style="background:var(--green)"></span>標準版　正常日，完整 30 分</span>
+          <span class="lg"><span class="swatch" style="background:var(--gold)"></span>進階版　有餘力，加深 45–60 分</span>
+        </div>
+        <p style="margin-top:10px;font-size:14px;color:var(--ink-soft)"><strong>過關＝測驗答對門檻 + 自評三項打勾</strong>，不是「看完」就算。缺一天沒關係，把不懂的補進測驗的弱點補強即可。<span class="tbc">⭐ D3 與 🚩 D5 即使最低版也要完成核心。</span></p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 7日課表 -->
+  <section id="schedule">
+    <div class="sh"><span class="n">01</span><h2>7 日自學課表 ＋ 當日測驗</h2><span class="meta">讀完立刻測・即時補強</span></div>
+    <div class="row-btns">
+      <button class="mini" onclick="setAll(true)">全部展開</button>
+      <button class="mini" onclick="setAll(false)">全部收合</button>
+    </div>
+    <div id="days"></div>
+  </section>
+
+  <!-- AI 學習法 -->
+  <section id="ai">
+    <div class="sh"><span class="n">02</span><h2>AI 輔助學習法（可複製提示）</h2><span class="meta">把 AI 當零基礎家教</span></div>
+    <details>
+      <summary><span class="chev">▶</span><div class="d-title"><h3>展開：6 組可直接複製的 AI 提示</h3><div class="date">講解／配置／翻譯／自測／辨詐／複習</div></div></summary>
+      <div class="d-body">
+        <p style="font-size:14px;color:var(--ink-soft)">每天學完挑 1–2 個用。<strong>原則：要求 AI 用零基礎、生活比喻、先講風險。</strong></p>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P1 · 把主題講成人話</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">解釋</span><code>我是加密投資完全新手。請用國中生也懂的方式，搭配一個生活比喻，解釋「今天的主題：＿＿＿」。最後用 3 句話總結，並提醒這主題有什麼風險或常見誤解。</code></div>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P2 · 資產配置家教</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">配置</span><code>請用零基礎方式解釋「資產配置」與「為什麼不要把錢集中在一個標的」。給我一個簡單框架：怎麼決定加密資產佔總資產的比例？強調風險控管，不要給具體投資建議或推薦任何幣。</code></div>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P3 · 白話翻譯難懂材料</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">翻譯</span><code>以下內容我看不懂，請逐句翻成白話，遇到專有名詞先用一句話定義再解釋：「＿＿＿（貼上片段）」</code></div>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P4 · 自我測驗 + 風險對照表</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">測驗</span><code>針對「今天主題：＿＿＿」出 5 題選擇題考我（含答案與解析，先別給答案，等我答完）。至少 2 題考「風險」與「常見詐騙手法」。</code></div>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">風險對照（D5 用）</span><code>幫我做一張表：欄位＝項目、收益怎麼來、主要風險、常見詐騙話術。項目涵蓋：匯差套利、高利活存、幣圈放貸、期現套利、合約交易。零基礎語言，強調風險，不要鼓勵我去做。</code></div>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P5 · 詐騙辨識演練（D3 進階）</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">辨識</span><code>請扮演常見加密詐騙情境（假客服、假高利活存、假空投、誘導簽署錢包授權），一次一個對話讓我判斷哪裡有問題。我答完你再指出紅旗在哪、正確做法是什麼。</code></div>
+
+        <h4 style="font-size:14px;margin:12px 0 4px;color:var(--ink)">P6 · 費曼複習（D7）</h4>
+        <div class="prompt"><button class="copy" onclick="cp(this)">複製</button><span class="plab">複習</span><code>我要用自己的話解釋這 10 個名詞：區塊鏈、比特幣、以太坊、智能合約、錢包、私鑰、助記詞、交易所、穩定幣、DeFi。我講完一個你就指出哪裡錯或不夠精準，補一句最關鍵重點。</code></div>
+
+        <div class="note" style="margin-top:14px">
+          <span class="ic">⚠️</span>
+          <p><b>AI 界線：</b>AI 可能講錯或過時，<b>關鍵安全/法規/數字一定回頭對官方來源</b>。<b>絕不把助記詞、私鑰、密碼貼給任何 AI 或網站。</b>AI 不能替你做投資決定。</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 學習日誌 -->
+  <section id="log">
+    <div class="sh"><span class="n">03</span><h2>每日學習日誌格式</h2><span class="meta">每天 30 秒</span></div>
+    <details>
+      <summary><span class="chev">▶</span><div class="d-title"><h3>展開：30 秒學習日誌（照貼填空）</h3><div class="date">寫進 Notion 自學進度區</div></div></summary>
+      <div class="d-body">
+        <div class="log">📅 日期：D__ 6/__
+🎚️ 今天版本：最低 / 標準 / 進階
+💡 學到的 3 件事：
+   1.
+   2.
+   3.
+❓ 還沒懂的（看當日測驗補強辦法）：
+🚩 有沒有聽到「保證/穩賺/無風險」：
+✅ 當日測驗有沒有過：有 / 沒有</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 互動總複習 -->
+  <section id="final">
+    <div class="sh"><span class="n">04</span><h2>互動式課前總複習（6/12 晚上）</h2><span class="meta">立刻知道哪裡不熟・即時補強</span></div>
+    <div class="card" style="padding:18px 20px">
+      <p style="font-size:14px;color:var(--ink-soft);margin-bottom:4px">勾選你「能用一句話解釋」的名詞、與你「已做到」的安全/風險項目。下方會即時算出熟悉度，並把<strong>沒勾的項目自動列成補強清單與發問清單</strong>。</p>
+    </div>
+    <div id="finalReview"></div>
+  </section>
+
+  <footer>
+    <p>語言：台灣繁體中文｜每日 30 分鐘｜6/6–6/12 → 實體課 6/13–6/14｜進度與測驗結果僅存在此頁面，重整可能清空。</p>
+    <p style="margin-top:6px">資料來源：Binance Academy（含中文）、ethereum.org、Coinbase Learn、Bitcoin 白皮書、Preface、維基百科等公開教育資源。標「待驗證」者請以官方頁面為準。</p>
+    <p style="margin-top:6px;color:#b07a3a">本手冊為學習用途，不構成投資建議。加密資產波動大、可能全額損失；高利／放貸／套利／合約類在台灣常見詐騙，務必先查證、先小額測試、不投借來的錢。</p>
+  </footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const DAYS = [
+  {
+    id:1, date:"6/6", dow:"星期六", color:"var(--green)", badge:"D1",
+    title:"區塊鏈與比特幣是什麼",
+    obj:"能用一句話解釋「區塊鏈是一本大家共同記、改不掉的帳本」與「比特幣是第一個應用」。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"只要懂「帳本＋不可竄改＋去中心化」三個詞。",mats:[
+        ['Binance Academy 中文〈區塊鏈是什麼〉','https://www.binance.com/zh-TC/academy','binance.com/zh-TC/academy（搜「區塊鏈」）'],
+        ['YouTube 搜「區塊鏈 3 分鐘 懂」任一短片',null,'頻道待驗證']]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"加上「為什麼需要它、和銀行帳本差在哪」。",mats:[
+        ['Binance Academy〈Start Here / Crypto 101〉','https://academy.binance.com/en/start-here','academy.binance.com/en/start-here'],
+        ['Coinbase Learn〈crypto basics〉','https://www.coinbase.com/learn/crypto-basics','coinbase.com/learn'],
+        ['Podcast：Spotify 搜「區塊鏈 入門」華語節目',null,'節目待驗證']]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"讀比特幣白皮書摘要，理解「為什麼能不靠銀行轉帳」。",mats:[
+        ['比特幣白皮書（9 頁，先讀摘要）','https://bitcoin.org/bitcoin.pdf','bitcoin.org/bitcoin.pdf'],
+        ['讓 AI 把白皮書翻成白話（AI 學習法 P3）',null,null]]}
+    ],
+    quiz:[
+      {q:"「區塊鏈」最貼切的比喻是？",opts:["一家銀行的中央電腦","一本大家共同記、寫了改不掉的帳本","一種會自動上漲的股票","一個加密的聊天軟體"],ans:1,
+       ex:"區塊鏈＝分散式、可追加但不可竄改的帳本。它不是哪家公司的中央電腦，也不是會上漲的資產。",topic:"區塊鏈定義"},
+      {q:"比特幣和區塊鏈的關係是？",opts:["兩者是同一個東西","比特幣是區塊鏈技術的第一個大型應用","區塊鏈是比特幣公司開發的產品","比特幣是一種銀行帳戶"],ans:1,
+       ex:"區塊鏈是底層技術；比特幣是建立在區塊鏈上的第一個應用。技術 ≠ 應用。",topic:"比特幣 vs 區塊鏈"},
+      {q:"「去中心化」帶來的核心特性是？",opts:["有一個老闆說了算","資料存在很多節點、沒有單一控制者","交易完全免費","保證價格穩定"],ans:1,
+       ex:"去中心化＝沒有單一中央機構控制，資料由眾多節點共同維護；它不保證免費或穩定。",topic:"去中心化"}
+    ]
+  },
+  {
+    id:2, date:"6/7", dow:"星期日", color:"var(--green)", badge:"D2",
+    title:"以太坊與智能合約",
+    obj:"能說出「比特幣像數位黃金，以太坊像可跑程式的平台」，知道智能合約是什麼。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"記住「以太坊＝會跑 App 的區塊鏈，ETH 是它的油錢」。",mats:[
+        ['ethereum.org〈What is Ethereum〉','https://ethereum.org/learn/','ethereum.org/learn'],
+        ['Coinbase Learn〈What is Ethereum〉','https://www.coinbase.com/learn/crypto-basics/what-is-ethereum','coinbase.com/learn']]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"加上「智能合約＝自動執行的合約程式」「gas 手續費」。",mats:[
+        ['ethereum.org 基礎影片（Ethereum Basics）','https://ethereum.org/learn/','ethereum.org/learn'],
+        ['Binance Academy 中文搜「智能合約」「以太坊」','https://www.binance.com/zh-TC/academy','academy']]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"了解 EVM、Layer 2、為什麼會塞車與手續費高。",mats:[
+        ['ethereum.org〈Intro to Ethereum〉','https://ethereum.org/developers/docs/intro-to-ethereum/','developers/docs']]}
+    ],
+    quiz:[
+      {q:"比特幣與以太坊最主要的差別是？",opts:["以太坊比較便宜","比特幣較像數位黃金，以太坊是能跑程式(智能合約)的平台","兩者完全一樣","以太坊不是區塊鏈"],ans:1,
+       ex:"比特幣設計上偏「價值儲存/數位黃金」；以太坊是可執行智能合約、跑 dApp 的平台。",topic:"比特幣 vs 以太坊"},
+      {q:"「智能合約」是什麼？",opts:["律師簽的紙本合約","符合條件就自動執行的程式","一種保證獲利的投資","交易所的客服系統"],ans:1,
+       ex:"智能合約是寫在鏈上、條件成立就自動執行的程式碼，沒有中間人，但程式有 bug 也照跑。",topic:"智能合約"},
+      {q:"以太坊上的「gas」指的是？",opts:["一種新的幣","在以太坊上操作要付的手續費","汽車燃料","錢包密碼"],ans:1,
+       ex:"gas 是執行交易/合約要付的網路手續費，用 ETH 支付；網路愈擠費用愈高。",topic:"gas 手續費"}
+    ]
+  },
+  {
+    id:3, date:"6/8", dow:"星期一・最重要", color:"var(--rose)", badge:"D3⭐",
+    title:"錢包・私鑰・助記詞（安全核心）",
+    obj:"能說出「誰有助記詞＝誰有錢」，記住保管三原則。這天的安全觀念比任何獲利都重要。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"背下：私鑰/助記詞絕不給人、絕不截圖上傳、只在官網/官方 App 下載錢包。",mats:[
+        ['Binance Academy 中文搜「熱錢包 冷錢包 私鑰」','https://www.binance.com/zh-TC/academy','academy'],
+        ['Preface〈加密貨幣錢包 冷熱錢包〉中文','https://www.preface.ai/blog/crypto-wallet/','preface.ai/blog/crypto-wallet']]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"分清公鑰(地址,可給人) vs 私鑰/助記詞(密碼,不給人)；熱/冷錢包用途。",mats:[
+        ['Binance Academy〈Hot vs Cold Wallet〉','https://academy.binance.com/en','academy.binance.com'],
+        ['維基百科〈密碼貨幣錢包〉中文','https://zh.wikipedia.org/zh-tw/%E5%AF%86%E7%A2%BC%E8%B2%A8%E5%B9%A3%E9%8C%A2%E5%8C%85','zh.wikipedia.org']]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"研究常見錢包詐騙（假客服、假空投、釣魚連結、誘導簽署授權）。",mats:[
+        ['CBA 亞洲區塊鏈學院 詐騙/資安單元',null,'完整內容待驗證'],
+        ['用 AI 模擬詐騙對話辨識（AI 學習法 P5）',null,null]]}
+    ],
+    quiz:[
+      {q:"可以安全給別人、用來收款的是？",opts:["私鑰","助記詞","公鑰/錢包地址","錢包密碼"],ans:2,flag:"安全",
+       ex:"公鑰/地址像銀行帳號，可給人收款；私鑰與助記詞像密碼+保險箱鑰匙，給出去＝資產被拿走。",topic:"公鑰 vs 私鑰"},
+      {q:"客服私訊請你提供助記詞「驗證帳號」，正確反應是？",opts:["趕快提供以免帳號被鎖","只給前半段比較安全","一律拒絕，任何人都不該索取助記詞","先給對方看截圖"],ans:2,flag:"詐騙",
+       ex:"任何要你提供助記詞/私鑰的，100% 是詐騙。官方永遠不會跟你要。半段、截圖都不行。",topic:"助記詞詐騙"},
+      {q:"關於助記詞的保管，哪個做法最危險？",opts:["抄在紙上鎖起來","截圖存在手機相簿或雲端","記在腦中","用硬體錢包"],ans:1,flag:"安全",
+       ex:"截圖上傳雲端/相簿一旦外洩或被盜，資產直接歸零。離線手抄、硬體錢包才安全。",topic:"助記詞保管"},
+      {q:"「冷錢包」相對「熱錢包」的特性是？",opts:["連網、方便、適合大額長期存放","離線、較安全、適合大額長期存放","由交易所保管私鑰","保證不會被駭"],ans:1,
+       ex:"冷錢包離線保存私鑰、較安全，適合長期大額；熱錢包連網方便但風險較高，放少量。沒有「保證不被駭」。",topic:"冷熱錢包"}
+    ]
+  },
+  {
+    id:4, date:"6/9", dow:"星期二", color:"var(--green)", badge:"D4",
+    title:"交易所・入金・穩定幣",
+    obj:"知道交易所是什麼、台幣怎麼進場、穩定幣(USDT/USDC)為何「值 1 美元」與它的風險。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"記住「穩定幣＝盯住美元的加密貨幣」「交易所＝買賣平台」。",mats:[
+        ['Coinbase Learn〈What is a stablecoin〉','https://www.coinbase.com/learn/crypto-basics','coinbase.com/learn'],
+        ['Binance Academy 中文搜「穩定幣 USDT USDC」','https://www.binance.com/zh-TC/academy','academy']]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"了解台灣(MAX/BitoPro) vs 國際(Binance/Bybit/OKX)交易所、2FA 為何必開、脫鉤(depeg)風險。",mats:[
+        ['Coinbase Learn〈Why do stablecoins depeg〉','https://www.coinbase.com/learn/crypto-basics/why-do-stablecoins-depeg','coinbase.com/learn'],
+        ['各交易所官方「新手教學」頁',null,'以官方頁為準']]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"比較 CEX vs DEX、託管 vs 自管、台灣交易所合規/實名。",mats:[
+        ['鏈習生 Chainee（台灣平台新手文）','https://chainee.io/courses/01','內容品質自行判斷']]}
+    ],
+    quiz:[
+      {q:"USDC、USDT 這類「穩定幣」的設計目的是？",opts:["保證每年配息","價格盡量盯住 1 美元，方便當交易中介","一定會升值","由政府發行"],ans:1,
+       ex:"穩定幣靠儲備/機制把價格錨定在約 1 美元，當作進出場與計價的中介；它不保證配息或升值。",topic:"穩定幣定義"},
+      {q:"穩定幣「脫鉤(depeg)」是指？",opts:["交易所倒閉","幣價明顯偏離它該錨定的價值(如不再≈1美元)","錢包被駭","手續費上漲"],ans:1,flag:"風險",
+       ex:"depeg＝失去與美元的 1:1 錨定，歷史上有穩定幣崩到接近 0。穩定幣不等於零風險。",topic:"穩定幣脫鉤風險"},
+      {q:"註冊交易所後，第一件該做的安全設定通常是？",opts:["開最大槓桿","開啟 2FA 雙重驗證","把全部資產轉進去","關閉通知"],ans:1,flag:"安全",
+       ex:"2FA(雙重驗證)大幅降低帳號被盜風險，是入金前的基本防護。",topic:"2FA"}
+    ]
+  },
+  {
+    id:5, date:"6/10", dow:"星期三・高風險辨識", color:"var(--rose)", badge:"D5🚩",
+    title:"DeFi 與課程關鍵字（活存／放貸／套利）",
+    obj:"聽得懂課程關鍵字，並對每個收益來源會問：錢從哪來？風險在哪？這天目標是辨識風險，不是學怎麼操作。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"記住「高利＝高風險」「沒有無風險套利」「合約＝槓桿＝可能歸零」。",mats:[
+        ['Binance Academy 中文搜「DeFi」「借貸」「合約 風險」','https://www.binance.com/zh-TC/academy','academy']]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"建立關鍵字對照：每項的「收益來源 + 主要風險」。",mats:[
+        ['Binance Academy〈DeFi / Lending / Yield〉','https://academy.binance.com/en','academy.binance.com'],
+        ['用 AI 建「關鍵字風險對照表」(AI 學習法 P4，最推薦)',null,null]]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"了解歷史爆雷（演算法穩定幣崩盤、放貸平台倒閉、合約爆倉）。",mats:[
+        ['Coinbase〈stablecoin depeg〉+ AI 整理事件時間線','https://www.coinbase.com/learn/crypto-basics/why-do-stablecoins-depeg','coinbase.com/learn']]}
+    ],
+    quiz:[
+      {q:"看到「保證年化 30% 高利活存、零風險」最該有的反應是？",opts:["趕快投，名額有限","這是典型紅旗，先質疑錢從哪來、查證再說","借錢加碼","先小額但相信它零風險"],ans:1,flag:"詐騙",
+       ex:"「保證高利＋零風險」自相矛盾，是經典詐騙話術。高報酬必有高風險，先問收益來源與對手方。",topic:"高利活存紅旗"},
+      {q:"合約(槓桿)交易最關鍵的風險是？",opts:["手續費太高","價格反向時可能被強制平倉(爆倉)、虧損放大甚至歸零","只能做多","不能隨時賣"],ans:1,flag:"風險",
+       ex:"槓桿放大獲利也放大虧損，到達爆倉價會被強制平倉，本金可能快速歸零。",topic:"合約爆倉"},
+      {q:"關於「套利」，正確認知是？",opts:["穩賺不賠的免費午餐","仍有滑價、手續費、流動性、平台與執行風險","政府保證","和定存一樣安全"],ans:1,flag:"風險",
+       ex:"沒有真正無風險的套利；價差會被成本與風險吃掉，宣稱「無風險套利」要高度警覺。",topic:"套利風險"},
+      {q:"判斷一個「收益型」項目時，最該先問的是？",opts:["報酬率多高","這個收益『錢從哪裡來』、誰是對手方、出事誰負責","老師有沒有名氣","群組人多不多"],ans:1,flag:"風險",
+       ex:"看不懂收益來源＝看不到風險。先搞清楚錢從哪來、對手方是誰，比報酬率重要。",topic:"收益來源判斷"}
+    ]
+  },
+  {
+    id:6, date:"6/11", dow:"星期四", color:"var(--green)", badge:"D6",
+    title:"資產配置與風險管理",
+    obj:"會用「總資產的幾 %」思考加密投資，能講出停損、分散、只投虧得起的錢三原則。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"決定一個「加密資產佔總資產上限 %」(睡得著的數字)，寫下來。",mats:[
+        ['原則：先有緊急備用金、不投借來的錢、只放賠光也不影響生活的比例',null,null]]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"學「核心 vs 衛星」：核心長期持有主流，衛星小額實驗；每筆先設停損與最大可承受虧損。",mats:[
+        ['AI 用零基礎方式講資產配置(AI 學習法 P2)',null,null],
+        ['Binance Academy 搜「risk management / portfolio」','https://academy.binance.com/en','academy.binance.com']]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"了解波動率、相關性、定期定額(DCA) vs 一次投入，為何不 all-in 單一標的。",mats:[
+        ['請 AI 出 3 題情境練習「這樣配置風險在哪」(P4)',null,null]]}
+    ],
+    quiz:[
+      {q:"加密資產該佔總資產多少，比較健康的思考是？",opts:["越多越好，要 all-in","設一個就算全賠也不影響生活的上限比例","跟朋友一樣就好","全押單一最看好的幣"],ans:1,
+       ex:"先確定一個「賠光也活得下去」的上限，再分配；避免 all-in 與單一集中。",topic:"配置比例"},
+      {q:"下單前「寫不出停損與最大可承受虧損」時，正確做法是？",opts:["先做再說","就不要做這筆","加大部位","改問群組"],ans:1,flag:"風險",
+       ex:"寫不出停損＝沒想清楚風險。紀律是：先定停損與最大虧損，寫不出就不做。",topic:"停損紀律"},
+      {q:"「核心 vs 衛星」配置的精神是？",opts:["全部拿去做高風險衛星","核心放長期主流、衛星只用小額且虧得起的錢做實驗","核心衛星都重押","核心就是借錢投資"],ans:1,
+       ex:"核心穩、衛星小而可控；高風險操作只用虧得起的小額，且分散不集中。",topic:"核心衛星配置"}
+    ]
+  },
+  {
+    id:7, date:"6/12", dow:"星期五・上課前一天", color:"var(--gold)", badge:"D7",
+    title:"總複習 + 課前檢核",
+    obj:"把 D1–D6 串起來，跑下方互動總複習，列出「上課要主動問」的問題。",
+    tiers:[
+      {tag:"最低版",cls:"t-min",time:"10–15 分",goal:"只跑下方「互動式課前總複習」，沒勾到的記成發問清單。",mats:[
+        ['捲到本頁最下方「互動總複習」區即時自評',null,null]]},
+      {tag:"標準版",cls:"t-std",time:"30 分",goal:"用 AI 出 10 題綜合測驗(P4)，錯的回頭看對應日的補強。",mats:[
+        ['AI 學習法 P4，主題填「加密投資綜合」',null,null]]},
+      {tag:"進階版",cls:"t-adv",time:"45–60 分",goal:"對 AI 把 10 個核心名詞各講一遍，請 AI 抓錯(費曼)。",mats:[
+        ['AI 學習法 P6 費曼複習',null,null]]}
+    ],
+    quiz:[
+      {q:"上課時記筆記，最實用的三欄架構是？",opts:["講師金句／心情／日期","解決什麼問題／操作步驟／風險在哪","幣價／漲跌／群組連結","老師背景／學費／同學"],ans:1,
+       ex:"三欄＝解決什麼問題、步驟、風險；對應 Notion 學習筆記模板，課後好整理也好複盤。",topic:"上課筆記法"},
+      {q:"課堂聽到任何「收益機會」，下手前的正確流程是？",opts:["當場掃碼參加","先進 Notion 決策記錄、填停損與最大虧損、過紅旗檢核再說","跟著多數同學做","先小額但跳過檢核"],ans:1,flag:"風險",
+       ex:"真錢動作一律先走決策記錄＋紅旗檢核，寫不出停損就不做。課堂熱度不是跳過紀律的理由。",topic:"決策流程"}
+    ]
+  }
+];
+
+/* ---------- REMEDIATION MAP (topic -> material + AI prompt) ---------- */
+const FIX = {
+  "區塊鏈定義":["D1 Binance Academy 中文〈區塊鏈是什麼〉","P1 主題填「區塊鏈」"],
+  "比特幣 vs 區塊鏈":["D1 起點頁 + Coinbase Learn","「用比喻說明區塊鏈是技術、比特幣是應用」"],
+  "去中心化":["D1 Binance Academy","「去中心化是什麼，和銀行有什麼不同」"],
+  "比特幣 vs 以太坊":["D2 Coinbase / ethereum.org","「用一個比喻講比特幣和以太坊的差別」"],
+  "智能合約":["D2 ethereum.org / Binance Academy","「智能合約是什麼，舉一個生活例子」"],
+  "gas 手續費":["D2 ethereum.org","「以太坊 gas 是什麼，為什麼會變貴」"],
+  "公鑰 vs 私鑰":["D3 Preface 中文 + 維基","「公鑰、私鑰、助記詞用銀行帳戶比喻各是什麼」"],
+  "助記詞詐騙":["D3 進階詐騙辨識","P5 詐騙辨識演練"],
+  "助記詞保管":["D3 Binance Academy 冷熱錢包","「助記詞最安全和最危險的保管方式各是什麼」"],
+  "冷熱錢包":["D3 維基〈密碼貨幣錢包〉","「冷錢包熱錢包差別與各自用途」"],
+  "穩定幣定義":["D4 Coinbase〈What is a stablecoin〉","「穩定幣為什麼值 1 美元，怎麼維持」"],
+  "穩定幣脫鉤風險":["D4 Coinbase〈why depeg〉","「穩定幣什麼情況會脫鉤，舉歷史例子」"],
+  "2FA":["D4 交易所官方新手頁","「2FA 雙重驗證是什麼，為什麼一定要開」"],
+  "高利活存紅旗":["D5 風險對照表","P4 風險對照，重點看高利活存"],
+  "合約爆倉":["D5 Binance Academy 合約風險","「合約槓桿爆倉是什麼，本金怎麼歸零」"],
+  "套利風險":["D5 風險對照表","「為什麼沒有真正無風險的套利」"],
+  "收益來源判斷":["D5 風險對照表","「判斷收益型項目該先問哪些問題」"],
+  "配置比例":["D6 配置原則","P2 資產配置家教"],
+  "停損紀律":["D6 風險管理","「停損和最大可承受虧損怎麼設」"],
+  "核心衛星配置":["D6 配置原則","「核心衛星配置是什麼，加密該怎麼套用」"],
+  "上課筆記法":["D7 / 對應 Notion 學習筆記模板","「上課怎麼記筆記最好複盤」"],
+  "決策流程":["D7 / 決策記錄流程","「真錢動作前該走哪些檢核步驟」"]
+};
+
+/* ---------- FINAL REVIEW DATA ---------- */
+const TERMS = [
+  ["區塊鏈","D1"],["比特幣","D1"],["以太坊","D2"],["智能合約","D2"],["錢包","D3"],
+  ["私鑰","D3"],["助記詞","D3"],["交易所","D4"],["穩定幣","D4"],["DeFi","D5"]
+];
+const SAFE = [
+  ["能說出錢包安全三原則（不外流私鑰/助記詞、不截圖上傳、官網下載）","D3"],
+  ["看到『保證高利/穩賺/無風險/限時/代操/私下匯款』會警覺","D5"],
+  ["能說出活存／放貸／套利／合約各自的主要風險","D5"],
+  ["已決定『加密資產佔總資產上限 ＿%』（待確認，來自確認表 B1）","D6"],
+  ["記得『先設停損與最大可承受虧損，寫不出就不做』","D6"],
+  ["官方課前線上教材的安全相關章節已看完","—"]
+];
+
+/* ---------- STATE ---------- */
+const passed = {}; // dayId -> bool
+
+/* ---------- RENDER DAYS ---------- */
+const daysEl = document.getElementById('days');
+DAYS.forEach(d=>{
+  const det = document.createElement('details');
+  det.dataset.day = d.id;
+
+  let tiersHtml = d.tiers.map(t=>{
+    const mats = t.mats.map(m=>{
+      const link = m[1] ? `<a href="${m[1]}" target="_blank" rel="noopener">${m[0]}</a>` : m[0];
+      const src = m[2] ? (m[1] ? ` <span class="src">${m[2]}</span>` : ` <span class="tbc">${m[2]}</span>`) : '';
+      return `<li>${link}${src}</li>`;
+    }).join('');
+    return `<div class="tier">
+      <div class="tier-head"><span class="tier-tag ${t.cls}">${t.tag}</span><span class="tier-time">${t.time}</span></div>
+      <p class="tier-goal">${t.goal}</p>
+      <ul class="mats">${mats}</ul>
+    </div>`;
+  }).join('');
+
+  let quizHtml = d.quiz.map((qq,qi)=>{
+    const opts = qq.opts.map((o,oi)=>`
+      <div class="opt" data-d="${d.id}" data-q="${qi}" data-o="${oi}" onclick="pick(this)">
+        <span class="mk"></span><span>${o}</span>
+      </div>`).join('');
+    const flag = qq.flag ? `<span class="flag">${qq.flag}</span>` : '';
+    return `<div class="q" data-d="${d.id}" data-q="${qi}" data-ans="${qq.ans}" data-topic="${qq.topic}">
+      <div class="q-stem"><span class="qn">Q${qi+1}</span>${qq.q}${flag}</div>
+      <div class="opts">${opts}</div>
+      <div class="explain"><b>解析：</b>${qq.ex}</div>
+    </div>`;
+  }).join('');
+
+  const need = d.quiz.length>=4 ? d.quiz.length-1 : (d.quiz.length>=3?2:2); // pass threshold
+
+  det.innerHTML = `
+    <summary>
+      <span class="chev">▶</span>
+      <div class="d-badge" style="background:${d.color}">${d.badge.replace(/(.{2})/, '$1<br>')}</div>
+      <div class="d-title"><h3>${d.title}</h3><div class="date">${d.date}　${d.dow}</div></div>
+      <span class="d-status" id="st-${d.id}">未完成</span>
+    </summary>
+    <div class="d-body">
+      <div class="obj-line"><span class="lab">學習目標</span><p>${d.obj}</p></div>
+      ${tiersHtml}
+      <div class="quiz">
+        <div class="quiz-head"><span class="qi">📝</span> 當日測驗（答對 ${need}/${d.quiz.length} 即過關）</div>
+        <div class="quiz-body">
+          ${quizHtml}
+          <div class="quiz-actions">
+            <button class="btn btn-primary" onclick="grade(${d.id},${need})">送出評量</button>
+            <button class="btn btn-ghost" onclick="retry(${d.id})">重做</button>
+          </div>
+          <div class="result" id="res-${d.id}"></div>
+        </div>
+      </div>
+    </div>`;
+  daysEl.appendChild(det);
+});
+
+/* ---------- QUIZ LOGIC ---------- */
+function pick(el){
+  const d=el.dataset.d,q=el.dataset.q;
+  document.querySelectorAll(`.opt[data-d="${d}"][data-q="${q}"]`).forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function grade(dayId, need){
+  const day = DAYS.find(x=>x.id===dayId);
+  let correct=0; const wrongTopics=[]; let unanswered=0;
+  day.quiz.forEach((qq,qi)=>{
+    const sel = document.querySelector(`.opt.sel[data-d="${dayId}"][data-q="${qi}"]`);
+    const all = document.querySelectorAll(`.opt[data-d="${dayId}"][data-q="${qi}"]`);
+    const exp = document.querySelector(`.q[data-d="${dayId}"][data-q="${qi}"] .explain`);
+    all.forEach(o=>o.classList.add('locked'));
+    exp.classList.add('show');
+    if(!sel){ unanswered++; wrongTopics.push(qq.topic);
+      all.forEach(o=>{ if(+o.dataset.o===qq.ans) o.classList.add('correct'); });
+      return;
+    }
+    const chosen=+sel.dataset.o;
+    if(chosen===qq.ans){ correct++; sel.classList.add('correct'); }
+    else{ sel.classList.add('wrong'); wrongTopics.push(qq.topic);
+      all.forEach(o=>{ if(+o.dataset.o===qq.ans) o.classList.add('correct'); }); }
+  });
+
+  const res=document.getElementById('res-'+dayId);
+  const isPass = correct>=need;
+  passed[dayId]=isPass;
+  updateDash();
+  document.getElementById('st-'+dayId).textContent = isPass?'已通過 ✓':'待補強';
+  document.getElementById('st-'+dayId).className = 'd-status'+(isPass?' done':'');
+
+  let fixHtml='';
+  if(wrongTopics.length){
+    fixHtml = '<h4>立即補強（針對你答錯/未答的概念）</h4><ul class="fixlist">'+
+      wrongTopics.map(t=>{
+        const f=FIX[t]||['回看當日材料','用 AI 學習法 P1 重講一次'];
+        return `<li><b>${t}</b><span class="how">📖 回看：${f[0]}</span><span class="how">🤖 AI 提示：${f[1]}</span></li>`;
+      }).join('')+'</ul>';
+  }
+
+  const selfTest = `
+    <div class="selftest">
+      <div class="stt">自我評量標準（過關才算完成，請誠實勾選）</div>
+      <label><input type="checkbox"> 我能用<b>一句話</b>跟朋友解釋今天的主題</label>
+      <label><input type="checkbox"> 我能說出今天主題<b>至少一個風險</b></label>
+      <label><input type="checkbox"> 上面測驗我已達 ${need}/${day.quiz.length} 門檻</label>
+    </div>`;
+
+  res.className='result show '+(isPass?'pass':'fail');
+  res.innerHTML = `
+    <div class="score">${correct} / ${day.quiz.length} 答對</div>
+    <div class="verdict">${isPass?'✅ 通過！觀念到位，可以進下一天。':'🔁 還沒過 — 先照下面補強，再按「重做」。'}</div>
+    ${isPass && wrongTopics.length? '<p style="font-size:13px;color:var(--ink-soft);margin:0 0 4px">雖然過關，這幾個概念仍建議補一下：</p>':''}
+    ${fixHtml}
+    ${!wrongTopics.length?'<p style="font-size:13.5px;color:var(--green);margin-top:4px">全對，沒有需要補強的概念 👍</p>':''}
+    ${selfTest}
+    <p style="font-size:12.5px;color:var(--ink-dim);margin-top:10px;font-family:'JetBrains Mono',monospace">→ 把未懂概念寫進 Notion 自學日誌的「還沒懂的」欄。</p>`;
+  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function retry(dayId){
+  document.querySelectorAll(`.opt[data-d="${dayId}"]`).forEach(o=>o.classList.remove('sel','correct','wrong','locked'));
+  document.querySelectorAll(`.q[data-d="${dayId}"] .explain`).forEach(e=>e.classList.remove('show'));
+  const res=document.getElementById('res-'+dayId); res.className='result'; res.innerHTML='';
+  passed[dayId]=false; updateDash();
+  document.getElementById('st-'+dayId).textContent='未完成';
+  document.getElementById('st-'+dayId).className='d-status';
+}
+function updateDash(){
+  const n=Object.values(passed).filter(Boolean).length;
+  document.getElementById('pctText').textContent=n+' / 7';
+  document.getElementById('barFill').style.width=(n/7*100)+'%';
+}
+function setAll(open){ document.querySelectorAll('#days details').forEach(d=>d.open=open); }
+function resetAll(){
+  DAYS.forEach(d=>retry(d.id));
+  document.querySelectorAll('#finalReview input[type=checkbox]').forEach(c=>c.checked=false);
+  computeFinal();
+}
+function cp(btn){
+  const code=btn.parentElement.querySelector('code').innerText;
+  navigator.clipboard?.writeText(code).then(()=>{const t=btn.textContent;btn.textContent='已複製';setTimeout(()=>btn.textContent=t,1200);});
+}
+
+/* ---------- FINAL REVIEW ---------- */
+const fr=document.getElementById('finalReview');
+const termChecks = TERMS.map((t,i)=>`<label class="frlabel"><input type="checkbox" data-type="term" data-i="${i}" onchange="computeFinal()"> ${t[0]} <span class="src">${t[1]}</span></label>`).join('');
+const safeChecks = SAFE.map((t,i)=>`<label class="frlabel"><input type="checkbox" data-type="safe" data-i="${i}" onchange="computeFinal()"> ${t[0]} <span class="src">${t[1]}</span></label>`).join('');
+fr.innerHTML=`
+  <div class="card">
+    <h3>一、十個名詞：我能用一句話解釋的打勾</h3>
+    <div id="termGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">${termChecks}</div>
+    <h3 style="margin-top:18px">二、安全・風險・配置：我已做到的打勾</h3>
+    <div style="display:grid;gap:8px">${safeChecks}</div>
+    <div class="result show" id="finalRes" style="border-color:var(--line);background:var(--paper2)">
+      <div class="score" id="finalScore">熟悉度 0 / 16</div>
+      <div class="verdict" id="finalVerdict" style="color:var(--ink-dim)">勾選上面項目，這裡會即時更新。</div>
+      <div id="finalGaps"></div>
+    </div>
+  </div>`;
+// style for labels
+const stl=document.createElement('style');
+stl.textContent=`.frlabel{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 11px;cursor:pointer}.frlabel input{margin-top:3px;accent-color:var(--accent);flex:none}.frlabel .src{margin-left:auto}`;
+document.head.appendChild(stl);
+
+function computeFinal(){
+  const termBoxes=[...document.querySelectorAll('#finalReview input[data-type=term]')];
+  const safeBoxes=[...document.querySelectorAll('#finalReview input[data-type=safe]')];
+  const total=termBoxes.length+safeBoxes.length;
+  const got=[...termBoxes,...safeBoxes].filter(b=>b.checked).length;
+  document.getElementById('finalScore').textContent=`熟悉度 ${got} / ${total}`;
+
+  const gapsTerm=termBoxes.map((b,i)=>b.checked?null:TERMS[i]).filter(Boolean);
+  const gapsSafe=safeBoxes.map((b,i)=>b.checked?null:SAFE[i]).filter(Boolean);
+  const v=document.getElementById('finalVerdict');
+  const g=document.getElementById('finalGaps');
+  const res=document.getElementById('finalRes');
+
+  if(got===total){
+    res.className='result show pass';
+    v.style.color='var(--green)'; v.textContent='✅ 準備到位！聽得懂、跟得上、守得住安全底線，可以放心去上課。';
+    g.innerHTML='';
+    return;
+  }
+  res.className='result show fail';
+  v.style.color='var(--amber)';
+  v.textContent='🔁 還有幾項不熟 — 下面是你的『快速補強 + 上課發問』清單。';
+
+  let html='';
+  if(gapsTerm.length){
+    html+='<h4>名詞快速補強</h4><ul class="fixlist">'+gapsTerm.map(t=>{
+      const map={'區塊鏈':'區塊鏈定義','比特幣':'比特幣 vs 區塊鏈','以太坊':'比特幣 vs 以太坊','智能合約':'智能合約','錢包':'冷熱錢包','私鑰':'公鑰 vs 私鑰','助記詞':'助記詞保管','交易所':'2FA','穩定幣':'穩定幣定義','DeFi':'收益來源判斷'};
+      const f=FIX[map[t[0]]]||['回看 '+t[1],'AI 學習法 P1'];
+      return `<li><b>${t[0]}</b>（${t[1]}）<span class="how">📖 ${f[0]}</span><span class="how">🤖 ${f[1]}</span></li>`;
+    }).join('')+'</ul>';
+  }
+  if(gapsSafe.length){
+    html+='<h4 style="margin-top:10px">安全/風險/配置補強</h4><ul class="fixlist">'+gapsSafe.map(t=>
+      `<li><b>${t[0]}</b><span class="how">📖 回看 ${t[1]}　🤖 用 AI 學習法 P1/P2/P4 重講一次</span></li>`
+    ).join('')+'</ul>';
+  }
+  html+='<div class="selftest" style="margin-top:12px"><div class="stt">上課主動發問清單</div><p style="font-size:13px;color:var(--ink-soft);margin:0">把上面沒勾的項目，整理成 6/13 上課時要主動問講師的問題——這是你已知的盲點，當場問最划算。</p></div>';
+  g.innerHTML=html;
+}
+computeFinal();
+updateDash();
+</script>
+</body>
 </html>
